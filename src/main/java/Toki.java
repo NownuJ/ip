@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Toki {
@@ -60,7 +61,7 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "unmark":
-                        if (arg == "") {
+                        if (Objects.equals(arg, "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! You need to specify which task to unmark.");
                             System.out.println(LINE);
@@ -81,7 +82,7 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "todo":
-                        if (arg == "") {
+                        if (Objects.equals(arg, "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The description of a todo cannot be empty.");
                             System.out.println(LINE);
@@ -101,12 +102,12 @@ public class Toki {
                     case "deadline":
                         String[] dParts = arg.split("/by", 2);
 
-                        if (dParts[0] == "") {
+                        if (Objects.equals(dParts[0], "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The description of a deadline cannot be empty.");
                             System.out.println(LINE);
                             break;
-                        } else if (dParts.length != 2 || dParts[1] == "") {
+                        } else if (dParts.length != 2 || Objects.equals(dParts[1], "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The todo of a deadline cannot be empty.");
                             System.out.println(LINE);
@@ -123,19 +124,19 @@ public class Toki {
                     case "event":
                         String[] eParts1 = arg.split("/from", 2);
 
-                        if (eParts1[0] == "") {
+                        if (Objects.equals(eParts1[0], "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The description of a event cannot be empty.");
                             System.out.println(LINE);
                             break;
-                        } else if (eParts1.length != 2 || eParts1[1] == "") {
+                        } else if (eParts1.length != 2 || Objects.equals(eParts1[1], "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The from date of a deadline cannot be empty.");
                             System.out.println(LINE);
                             break;
                         }
                         String[] eParts2 = eParts1[1].split("/to", 2);
-                        if (eParts2.length != 2 || eParts2[1] == "") {
+                        if (eParts2.length != 2 || Objects.equals(eParts2[1], "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The to date of a event cannot be empty.");
                             System.out.println(LINE);
@@ -146,6 +147,32 @@ public class Toki {
                         System.out.println(LINE);
                         System.out.println("     Got it. I've added this task:");
                         System.out.println("       " + list[index - 1]);
+                        System.out.println("     Now you have " + index + " tasks in the list.");
+                        System.out.println(LINE);
+                        break;
+                    case "delete":
+                        if (Objects.equals(arg, "")) {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! You need to specify which task to delete.");
+                            System.out.println(LINE);
+                            break;
+                        } else if (Integer.parseInt(arg) > index || Integer.parseInt(arg) < 1) {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! That is an invalid task index.");
+                            System.out.println(LINE);
+                            break;
+                        }
+
+                        int deleteInt = Integer.parseInt(arg);
+                        Task deleteTask = list[deleteInt - 1];
+                        for (int i = deleteInt; i < index; i++){
+                            list[i - 1] = list[i];
+                        }
+                        index--;
+
+                        System.out.println(LINE);
+                        System.out.println("     Okay, I've removed this task:");
+                        System.out.println("       " + deleteTask.toString());
                         System.out.println("     Now you have " + index + " tasks in the list.");
                         System.out.println(LINE);
                         break;

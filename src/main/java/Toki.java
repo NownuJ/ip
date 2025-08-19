@@ -39,6 +39,18 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "mark":
+                        if (arg == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! You need to specify which task to mark.");
+                            System.out.println(LINE);
+                            break;
+                        } else if (Integer.parseInt(arg) > index || Integer.parseInt(arg) < 1) {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! That is an invalid task index.");
+                            System.out.println(LINE);
+                            break;
+                        }
+
                         int markInt = Integer.parseInt(arg);
                         Task markTask = list[markInt - 1];
                         markTask.markAsDone();
@@ -48,6 +60,18 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "unmark":
+                        if (arg == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! You need to specify which task to unmark.");
+                            System.out.println(LINE);
+                            break;
+                        } else if (Integer.parseInt(arg) > index || Integer.parseInt(arg) < 1) {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! That is an invalid task index.");
+                            System.out.println(LINE);
+                            break;
+                        }
+
                         int unmarkInt = Integer.parseInt(arg);
                         Task unmarkTask = list[unmarkInt - 1];
                         unmarkTask.markAsUndone();
@@ -57,6 +81,13 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "todo":
+                        if (arg == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! The description of a todo cannot be empty.");
+                            System.out.println(LINE);
+                            break;
+                        }
+
                         Todo todo = new Todo(arg);
                         list[index] = todo;
                         index++;
@@ -70,6 +101,18 @@ public class Toki {
                     case "deadline":
                         String[] dParts = arg.split("/by", 2);
 
+                        if (dParts[0] == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! The description of a deadline cannot be empty.");
+                            System.out.println(LINE);
+                            break;
+                        } else if (dParts.length != 2 || dParts[1] == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! The todo of a deadline cannot be empty.");
+                            System.out.println(LINE);
+                            break;
+                        }
+
                         list[index++] = new Deadline(dParts[0], dParts[1]);
                         System.out.println(LINE);
                         System.out.println("     Got it. I've added this task:");
@@ -79,7 +122,25 @@ public class Toki {
                         break;
                     case "event":
                         String[] eParts1 = arg.split("/from", 2);
+
+                        if (eParts1[0] == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! The description of a event cannot be empty.");
+                            System.out.println(LINE);
+                            break;
+                        } else if (eParts1.length != 2 || eParts1[1] == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! The from date of a deadline cannot be empty.");
+                            System.out.println(LINE);
+                            break;
+                        }
                         String[] eParts2 = eParts1[1].split("/to", 2);
+                        if (eParts2.length != 2 || eParts2[1] == "") {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! The to date of a event cannot be empty.");
+                            System.out.println(LINE);
+                            break;
+                        }
 
                         list[index++] = new Event(eParts1[0], eParts2[0], eParts2[1]);
                         System.out.println(LINE);
@@ -89,37 +150,11 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     default:
-                        Task task = new Task(input);
-                        list[index++] = task;
-
                         System.out.println(LINE);
-                        System.out.println("    added: " + input);
+                        System.out.println("     Oh no! This is an invalid input.");
                         System.out.println(LINE);
                         break;
                 }
-
-                /*if (input.equals("bye")) {
-                    System.out.println(LINE);
-                    System.out.println("     Bye. Hope to see you again soon!");
-                    System.out.println(LINE);
-                    break;
-                } else if (input.equals("list")) {
-                    System.out.println(LINE);
-                    for (int i =0; i < index; i++) {
-                        Task t = list[i];
-                        System.out.println("     "+ (i+1) + "." + t.getStatusIcon() + " " + t.description);
-                    }
-                    System.out.println(LINE);
-                } else {  // adding new task to the list
-                    Task task = new Task(input);
-                    list[index] = task;
-                    index++;
-
-                    System.out.println(LINE);
-                    System.out.println("    added: " + input);
-                    System.out.println(LINE);
-                }*/
-
 
             }
         }

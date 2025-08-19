@@ -31,6 +31,7 @@ public class Toki {
                         return;
                     case "list":
                         System.out.println(LINE);
+                        System.out.println("     Here are the tasks in your list:");
                         for (int i =0; i < index; i++) {
                             Task t = list[i];
                             System.out.println("     "+ (i+1) + "." + t.toString());
@@ -42,7 +43,7 @@ public class Toki {
                         Task markTask = list[markInt - 1];
                         markTask.markAsDone();
                         System.out.println(LINE);
-                        System.out.println("Nice! I've marked this task as done:");
+                        System.out.println("     Nice! I've marked this task as done:");
                         System.out.println("  " + markTask.toString());
                         System.out.println(LINE);
                         break;
@@ -51,14 +52,45 @@ public class Toki {
                         Task unmarkTask = list[unmarkInt - 1];
                         unmarkTask.markAsUndone();
                         System.out.println(LINE);
-                        System.out.println("Nice! I've marked this task as not done yet:");
+                        System.out.println("     Nice! I've marked this task as not done yet:");
                         System.out.println("  " + unmarkTask.toString());
+                        System.out.println(LINE);
+                        break;
+                    case "todo":
+                        Todo todo = new Todo(arg);
+                        list[index] = todo;
+                        index++;
+
+                        System.out.println(LINE);
+                        System.out.println("     Got it. I've added this task:");
+                        System.out.println("       " + todo.toString());
+                        System.out.println("     Now you have " + index + " tasks in the list.");
+                        System.out.println(LINE);
+                        break;
+                    case "deadline":
+                        String[] dParts = arg.split("/by", 2);
+
+                        list[index++] = new Deadline(dParts[0], dParts[1]);
+                        System.out.println(LINE);
+                        System.out.println("     Got it. I've added this task:");
+                        System.out.println("       " + list[index - 1].toString());
+                        System.out.println("     Now you have " + index + " tasks in the list.");
+                        System.out.println(LINE);
+                        break;
+                    case "event":
+                        String[] eParts1 = arg.split("/from", 2);
+                        String[] eParts2 = eParts1[1].split("/to", 2);
+
+                        list[index++] = new Event(eParts1[0], eParts2[0], eParts2[1]);
+                        System.out.println(LINE);
+                        System.out.println("     Got it. I've added this task:");
+                        System.out.println("       " + list[index - 1]);
+                        System.out.println("     Now you have " + index + " tasks in the list.");
                         System.out.println(LINE);
                         break;
                     default:
                         Task task = new Task(input);
-                        list[index] = task;
-                        index++;
+                        list[index++] = task;
 
                         System.out.println(LINE);
                         System.out.println("    added: " + input);

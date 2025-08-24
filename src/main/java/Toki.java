@@ -1,15 +1,87 @@
-import java.util.Objects;
-import java.util.Scanner;
+import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class Toki {
     private static final String LINE =
             "   ____________________________________________________________";
+    private static final Path DATA = Paths.get("data", "toki.txt");
     private static final String UNMARKED = "[ ]";
     private static final String MARKED = "[X]";
 
+    // --- Save / Load feature functions -------------
+
+    private static void saveAll(Task[] list, int count) {
+        try {
+            Files.createDirectories(DATA.getParent());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < count; i++) {
+                Task t = list[i];
+                sb.append(toLine(t)).append('\n');
+            }
+            Files.write(DATA, sb.toString().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            System.out.println("(warn) could not save: " + e.getMessage());
+        }
+    }
+
+    private static int loadAll(Task[] list) {
+        int count = 0;
+        if (!Files.exists(DATA)) return 0;
+        try (BufferedReader br = Files.newBufferedReader(DATA, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                Task t = fromLine(line);
+                if (t != null) list[count++] = t;
+            }
+        } catch (IOException e) {
+            System.out.println("(warn) could not load: " + e.getMessage());
+        }
+        return count;
+    }
+
+    private static Task fromLine(String line) {
+        String[] p = line.split("\\s*\\|\\s*");
+        // p[0]=type, p[1]=done, others=fields
+        Task t = null;
+        switch (p[0]) {
+            case "T":
+                t = new Todo(p[2]);
+                break;
+            case "D":
+                t = new Deadline(p[2], p[3]);
+                break;
+            case "E":
+                t = new Event(p[2], p[3], p[4]);
+                break;
+            default:
+                return null;
+        }
+        if ("1".equals(p[1])) t.markAsDone();
+        return t;
+    }
+
+    private static String toLine(Task t) {
+        String done = t.isDone ? "1" : "0";
+        if (t instanceof Todo) {
+            return String.join(" | ", "T", done, t.description);
+        } else if (t instanceof Deadline) {
+            Deadline d = (Deadline) t;
+            return String.join(" | ", "D", done, d.description, d.by);
+        } else { // Event
+            Event e = (Event) t;
+            return String.join(" | ", "E", done, e.description, e.from, e.to);
+        }
+    }
+
+    // ----------------------------------------------
+
     public static void main(String[] args) {
         Task[] list = new Task[100];
-        int index = 0;
+        int index = loadAll(list);
 
         System.out.println(LINE);
         System.out.println("     Hello! I'm Toki");
@@ -55,6 +127,7 @@ public class Toki {
                         int markInt = Integer.parseInt(arg);
                         Task markTask = list[markInt - 1];
                         markTask.markAsDone();
+                        saveAll(list, index);
                         System.out.println(LINE);
                         System.out.println("     Nice! I've marked this task as done:");
                         System.out.println("  " + markTask.toString());
@@ -76,6 +149,7 @@ public class Toki {
                         int unmarkInt = Integer.parseInt(arg);
                         Task unmarkTask = list[unmarkInt - 1];
                         unmarkTask.markAsUndone();
+                        saveAll(list, index);
                         System.out.println(LINE);
                         System.out.println("     Nice! I've marked this task as not done yet:");
                         System.out.println("  " + unmarkTask.toString());
@@ -92,6 +166,7 @@ public class Toki {
                         Todo todo = new Todo(arg);
                         list[index] = todo;
                         index++;
+                        saveAll(list, index);
 
                         System.out.println(LINE);
                         System.out.println("     Got it. I've added this task:");
@@ -100,7 +175,7 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "deadline":
-                        String[] dParts = arg.split("/by", 2);
+                        String[] dParts = arg.split(" /by ", 2);
 
                         if (Objects.equals(dParts[0], "")) {
                             System.out.println(LINE);
@@ -115,6 +190,7 @@ public class Toki {
                         }
 
                         list[index++] = new Deadline(dParts[0], dParts[1]);
+                        saveAll(list, index);
                         System.out.println(LINE);
                         System.out.println("     Got it. I've added this task:");
                         System.out.println("       " + list[index - 1].toString());
@@ -122,7 +198,7 @@ public class Toki {
                         System.out.println(LINE);
                         break;
                     case "event":
-                        String[] eParts1 = arg.split("/from", 2);
+                        String[] eParts1 = arg.split(" /from ", 2);
 
                         if (Objects.equals(eParts1[0], "")) {
                             System.out.println(LINE);
@@ -135,7 +211,7 @@ public class Toki {
                             System.out.println(LINE);
                             break;
                         }
-                        String[] eParts2 = eParts1[1].split("/to", 2);
+                        String[] eParts2 = eParts1[1].split(" /to ", 2);
                         if (eParts2.length != 2 || Objects.equals(eParts2[1], "")) {
                             System.out.println(LINE);
                             System.out.println("     Oh no! The to date of a event cannot be empty.");
@@ -144,6 +220,7 @@ public class Toki {
                         }
 
                         list[index++] = new Event(eParts1[0], eParts2[0], eParts2[1]);
+                        saveAll(list, index);
                         System.out.println(LINE);
                         System.out.println("     Got it. I've added this task:");
                         System.out.println("       " + list[index - 1]);
@@ -169,6 +246,7 @@ public class Toki {
                             list[i - 1] = list[i];
                         }
                         index--;
+                        saveAll(list, index);
 
                         System.out.println(LINE);
                         System.out.println("     Okay, I've removed this task:");

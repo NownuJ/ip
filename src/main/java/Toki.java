@@ -1,7 +1,11 @@
 import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.time.LocalDate;
+
 
 public class Toki {
     private static final String LINE =
@@ -52,10 +56,10 @@ public class Toki {
                 t = new Todo(p[2]);
                 break;
             case "D":
-                t = new Deadline(p[2], p[3]);
+                t = new Deadline(p[2], LocalDate.parse(p[3]));
                 break;
             case "E":
-                t = new Event(p[2], p[3], p[4]);
+                t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
                 break;
             default:
                 return null;
@@ -70,11 +74,17 @@ public class Toki {
             return String.join(" | ", "T", done, t.description);
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
-            return String.join(" | ", "D", done, d.description, d.by);
+            return String.join(" | ", "D", done, d.description, d.by.toString());
         } else { // Event
             Event e = (Event) t;
-            return String.join(" | ", "E", done, e.description, e.from, e.to);
+            return String.join(" | ", "E", done, e.description, e.from.toString(), e.to.toString());
         }
+    }
+
+    // --- parseDateStrict for keeping track of errors when inputting dates
+
+    private static LocalDate parseDateStrict(String s) {
+        return LocalDate.parse(s.trim(), DateTimeFormatter.ISO_LOCAL_DATE); // yyyy-MM-dd
     }
 
     // ----------------------------------------------
@@ -189,13 +199,25 @@ public class Toki {
                             break;
                         }
 
-                        list[index++] = new Deadline(dParts[0], dParts[1]);
-                        saveAll(list, index);
-                        System.out.println(LINE);
-                        System.out.println("     Got it. I've added this task:");
-                        System.out.println("       " + list[index - 1].toString());
-                        System.out.println("     Now you have " + index + " tasks in the list.");
-                        System.out.println(LINE);
+                        String desc = dParts[0].trim();
+                        String byRaw = dParts.length > 1 ? dParts[1].trim() : "";
+
+                        try {
+                            LocalDate by = parseDateStrict(byRaw);
+                            list[index++] = new Deadline(desc, by);
+                            saveAll(list, index);
+                            System.out.println(LINE);
+                            System.out.println("     Got it. I've added this task:");
+                            System.out.println("       " + list[index - 1].toString());
+                            System.out.println("     Now you have " + index + " tasks in the list.");
+                            System.out.println(LINE);
+                        } catch (DateTimeParseException e) {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! Please use date format yyyy-MM-dd (e.g., 2025-11-15).");
+                            System.out.println(LINE);
+                        }
+
+
                         break;
                     case "event":
                         String[] eParts1 = arg.split(" /from ", 2);
@@ -219,13 +241,31 @@ public class Toki {
                             break;
                         }
 
-                        list[index++] = new Event(eParts1[0], eParts2[0], eParts2[1]);
-                        saveAll(list, index);
-                        System.out.println(LINE);
-                        System.out.println("     Got it. I've added this task:");
-                        System.out.println("       " + list[index - 1]);
-                        System.out.println("     Now you have " + index + " tasks in the list.");
-                        System.out.println(LINE);
+                        String descEvent = eParts1[0].trim();
+                        String fromRaw = eParts2[0].trim();
+                        String toRaw   = eParts2[1].trim();
+
+                        try {
+                            LocalDate fromEvent = parseDateStrict(fromRaw);  // ← same helper as Deadline
+                            LocalDate toEvent   = parseDateStrict(toRaw);
+                            if (toEvent.isBefore(fromEvent)) {
+                                System.out.println(LINE);
+                                System.out.println("     Oh no! 'to' must not be before 'from'.");
+                                System.out.println(LINE);
+                                break;
+                            }
+                            list[index++] = new Event(descEvent, fromEvent, toEvent);
+                            saveAll(list, index);
+                            System.out.println(LINE);
+                            System.out.println("     Got it. I've added this task:");
+                            System.out.println("       " + list[index - 1]);
+                            System.out.println("     Now you have " + index + " tasks in the list.");
+                            System.out.println(LINE);
+                        } catch (DateTimeParseException e) {
+                            System.out.println(LINE);
+                            System.out.println("     Oh no! Use date format yyyy-MM-dd (e.g., 2025-09-01).");
+                            System.out.println(LINE);
+                        }
                         break;
                     case "delete":
                         if (Objects.equals(arg, "")) {

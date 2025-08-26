@@ -1,7 +1,8 @@
+package toki.command;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Objects;
+import toki.*;
+import toki.task.*;
 
 public class DeadlineCommand extends Command{
 

@@ -1,7 +1,9 @@
+package toki.task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Event extends Task{
+public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
 
@@ -16,5 +18,13 @@ public class Event extends Task{
         String fromDate = from.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
         String toDate = to.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
         return "[E]" + super.toString() + " (from: " + fromDate + " to: " + toDate + ")";
+    }
+
+    public LocalDate getFrom() {
+        return this.from;
+    }
+
+    public LocalDate getTo() {
+        return this.to;
     }
 }

@@ -1,3 +1,5 @@
+package toki;
+
 public class TokiException extends Exception {
 
     public TokiException(String message, Throwable cause) {

@@ -1,3 +1,8 @@
+package toki.command;
+
+import toki.*;
+import toki.task.*;
+
 public class DeleteCommand extends Command{
     private final int index;
 

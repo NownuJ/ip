@@ -1,3 +1,8 @@
+package toki.command;
+
+import toki.*;
+import toki.task.*;
+
 public class MarkCommand extends Command{
     private final int index;
 

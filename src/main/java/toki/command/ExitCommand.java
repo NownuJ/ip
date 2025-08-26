@@ -1,3 +1,8 @@
+package toki.command;
+
+import toki.*;
+import toki.task.*;
+
 public class ExitCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {

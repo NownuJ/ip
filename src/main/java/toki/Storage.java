@@ -1,3 +1,10 @@
+package toki;
+
+import toki.task.Deadline;
+import toki.task.Event;
+import toki.task.Task;
+import toki.task.Todo;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -76,15 +83,15 @@ public class Storage {
     }
 
     private static String toLine(Task t) {
-        String done = t.isDone ? "1" : "0";
+        String done = t.getIsDone() ? "1" : "0";
         if (t instanceof Todo) {
-            return String.join(" | ", "T", done, t.description);
+            return String.join(" | ", "T", done, t.getDescription());
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
-            return String.join(" | ", "D", done, d.description, d.by.toString());
-        } else { // Event
+            return String.join(" | ", "D", done, d.getDescription(), d.getBy().toString());
+        } else { // toki.task.Event
             Event e = (Event) t;
-            return String.join(" | ", "E", done, e.description, e.from.toString(), e.to.toString());
+            return String.join(" | ", "E", done, e.getDescription(), e.getFrom().toString(), e.getTo().toString());
         }
     }
 }

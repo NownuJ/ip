@@ -1,3 +1,5 @@
+package toki;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -19,7 +21,7 @@ public class Ui {
     public void showLine() { System.out.println(LINE); }
     public void showWelcome() {
         showLine();
-        show("Hello! I'm Toki");
+        show("Hello! I'm toki.Toki");
         show("What can I do for you?");
         showLine();
     }

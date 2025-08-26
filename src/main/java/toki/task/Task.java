@@ -1,3 +1,5 @@
+package toki.task;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -24,6 +26,12 @@ public class Task {
         return getStatusIcon() + " " + this.description;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
 
+    public boolean getIsDone() {
+        return this.isDone;
+    }
 
 }

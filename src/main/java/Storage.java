@@ -55,7 +55,7 @@ public class Storage {
     private static Task fromLine(String line) {
         String[] p = line.split("\\s*\\|\\s*");
         // p[0]=type, p[1]=done, others=fields
-        Task t = null;
+        Task t;
         switch (p[0]) {
             case "T":
                 t = new Todo(p[2]);

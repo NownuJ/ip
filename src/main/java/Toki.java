@@ -14,76 +14,9 @@ public class Toki {
     private TaskList tasks; //contains the task list e.g., it has operations to add/delete tasks in the list
     private Ui ui; //deals with interactions with the user
 
-    private static final Path DATA = Paths.get("data", "toki.txt");
+    //will move to parser later
     private static final String UNMARKED = "[ ]";
     private static final String MARKED = "[X]";
-
-    // --- Save / Load feature functions -------------
-
-/*    private static void saveAll(Task[] list, int count) {
-        try {
-            Files.createDirectories(DATA.getParent());
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < count; i++) {
-                Task t = list[i];
-                sb.append(toLine(t)).append('\n');
-            }
-            Files.write(DATA, sb.toString().getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            System.out.println("(warn) could not save: " + e.getMessage());
-        }
-    }
-
-    private static int loadAll(Task[] list) {
-        int count = 0;
-        if (!Files.exists(DATA)) return 0;
-        try (BufferedReader br = Files.newBufferedReader(DATA, StandardCharsets.UTF_8)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-                Task t = fromLine(line);
-                if (t != null) list[count++] = t;
-            }
-        } catch (IOException e) {
-            System.out.println("(warn) could not load: " + e.getMessage());
-        }
-        return count;
-    }
-
-    private static Task fromLine(String line) {
-        String[] p = line.split("\\s*\\|\\s*");
-        // p[0]=type, p[1]=done, others=fields
-        Task t = null;
-        switch (p[0]) {
-            case "T":
-                t = new Todo(p[2]);
-                break;
-            case "D":
-                t = new Deadline(p[2], LocalDate.parse(p[3]));
-                break;
-            case "E":
-                t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
-                break;
-            default:
-                return null;
-        }
-        if ("1".equals(p[1])) t.markAsDone();
-        return t;
-    }
-
-    private static String toLine(Task t) {
-        String done = t.isDone ? "1" : "0";
-        if (t instanceof Todo) {
-            return String.join(" | ", "T", done, t.description);
-        } else if (t instanceof Deadline) {
-            Deadline d = (Deadline) t;
-            return String.join(" | ", "D", done, d.description, d.by.toString());
-        } else { // Event
-            Event e = (Event) t;
-            return String.join(" | ", "E", done, e.description, e.from.toString(), e.to.toString());
-        }
-    }*/
 
     // --- parseDateStrict for keeping track of errors when inputting dates
 
@@ -100,7 +33,7 @@ public class Toki {
         try {
             tasks = new TaskList(storage.load());
         } catch (TokiException e) {
-            //ui.showLoadingError();
+            ui.showLoadingError();
             tasks = new TaskList();
         }
 
@@ -110,15 +43,13 @@ public class Toki {
     private void run() {
         ui.showWelcome();
 
-        try (Scanner sc = new Scanner(System.in)) {
-            while (true) {
-                String input  = sc.nextLine();
-
+        while (true) {
+            try {
+                String input  = ui.readCommand();
 
                 String[] parts = input.split("\\s+", 2);
                 String cmd = parts[0].toLowerCase();
                 String arg = (parts.length > 1) ? parts[1]: "";
-
 
                 switch (cmd) {
                     case "bye":
@@ -284,12 +215,15 @@ public class Toki {
                         ui.showMessage("Oh no! This is an invalid input.");
                         break;
                 }
-
+            } catch (TokiException e) {
+                ui.showError(e.getMessage());
+            } finally {
 
             }
-        } catch (TokiException e) {
-            throw new RuntimeException(e);
+
+
         }
+
     }
 
     public static void main(String[] args) {

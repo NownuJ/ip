@@ -1,6 +1,17 @@
+import java.util.Scanner;
+
 public class Ui {
 
     private static final String LINE = "____________________________________________________________";
+    private final Scanner scanner;
+
+    public Ui() {
+        scanner = new Scanner(System.in);
+    }
+
+    public String readCommand() {
+        return scanner.nextLine();
+    }
 
     public void show(String s) { System.out.println("    " + s); }
     public void showLine() { System.out.println(LINE); }
@@ -27,5 +38,17 @@ public class Ui {
         }
         showLine();
     }
+
+    public void showError(String s) {
+        showLine();
+        show("Oh no! We detected an error. \n" + "Error Message: " + s);
+        showLine();
+    }
+
+    public void showLoadingError() {
+        System.out.println("(warn) Could not load saved data. Starting with an empty list.");
+    }
+
+
 
 }

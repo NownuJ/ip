@@ -7,9 +7,12 @@ import java.util.*;
 import java.time.LocalDate;
 
 
+
 public class Toki {
 
-
+    private Storage storage; //deals with loading tasks from the file and saving tasks in the file
+    private TaskList tasks; //contains the task list e.g., it has operations to add/delete tasks in the list
+    private Ui ui; //deals with interactions with the user
 
     private static final Path DATA = Paths.get("data", "toki.txt");
     private static final String UNMARKED = "[ ]";
@@ -17,7 +20,7 @@ public class Toki {
 
     // --- Save / Load feature functions -------------
 
-    private static void saveAll(Task[] list, int count) {
+/*    private static void saveAll(Task[] list, int count) {
         try {
             Files.createDirectories(DATA.getParent());
             StringBuilder sb = new StringBuilder();
@@ -80,7 +83,7 @@ public class Toki {
             Event e = (Event) t;
             return String.join(" | ", "E", done, e.description, e.from.toString(), e.to.toString());
         }
-    }
+    }*/
 
     // --- parseDateStrict for keeping track of errors when inputting dates
 
@@ -90,17 +93,22 @@ public class Toki {
 
     // ----------------------------------------------
 
-    private Storage storage; //deals with loading tasks from the file and saving tasks in the file
-    private TaskList tasks; //contains the task list e.g., it has operations to add/delete tasks in the list
-    private Ui ui; //deals with interactions with the user
+
+    public Toki(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (TokiException e) {
+            //ui.showLoadingError();
+            tasks = new TaskList();
+        }
+
+    }
+
 
     private void run() {
-        Task[] tasks = new Task[100];
-        int index = loadAll(tasks);
-
-
         ui.showWelcome();
-
 
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
@@ -119,8 +127,8 @@ public class Toki {
                     case "list":
                         ui.showLine();
                         ui.show("Here are the tasks in your list:");
-                        for (int i =0; i < index; i++) {
-                            Task t = tasks[i];
+                        for (int i =0; i < tasks.size(); i++) {
+                            Task t = tasks.get(i);
                             ui.show((i+1) + "." + t.toString());
                         }
                         ui.showLine();
@@ -129,38 +137,36 @@ public class Toki {
                         if (arg == "") {
                             ui.showMessage("Oh no! You need to specify which task to mark.");
                             break;
-                        } else if (Integer.parseInt(arg) > index || Integer.parseInt(arg) < 1) {
+                        } else if (Integer.parseInt(arg) > tasks.size() || Integer.parseInt(arg) < 1) {
                             ui.showMessage("Oh no! That is an invalid task index.");
                             break;
                         }
 
 
-                        int markInt = Integer.parseInt(arg);
-                        Task markTask = tasks[markInt - 1];
-                        markTask.markAsDone();
-                        saveAll(tasks, index);
+                        int markInt = Integer.parseInt(arg) - 1;
+                        tasks.mark(markInt);
+                        storage.save(tasks.asList());
                         ui.showLine();
                         ui.show("Nice! I've marked this task as done:");
-                        System.out.println("  " + markTask.toString());
+                        System.out.println("  " + tasks.get(markInt).toString());
                         ui.showLine();
                         break;
                     case "unmark":
                         if (Objects.equals(arg, "")) {
                             ui.showMessage("Oh no! You need to specify which task to unmark.");
                             break;
-                        } else if (Integer.parseInt(arg) > index || Integer.parseInt(arg) < 1) {
+                        } else if (Integer.parseInt(arg) > tasks.size() || Integer.parseInt(arg) < 1) {
                             ui.showMessage("Oh no! That is an invalid task index.");
                             break;
                         }
 
 
-                        int unmarkInt = Integer.parseInt(arg);
-                        Task unmarkTask = tasks[unmarkInt - 1];
-                        unmarkTask.markAsUndone();
-                        saveAll(tasks, index);
+                        int unmarkInt = Integer.parseInt(arg) - 1;
+                        tasks.unmark(unmarkInt);
+                        storage.save(tasks.asList());
                         ui.showLine();
                         ui.show("Nice! I've marked this task as not done yet:");
-                        System.out.println("  " + unmarkTask.toString());
+                        System.out.println("  " + tasks.get(unmarkInt).toString());
                         ui.showLine();
                         break;
                     case "todo":
@@ -169,22 +175,18 @@ public class Toki {
                             break;
                         }
 
-
                         Todo todo = new Todo(arg);
-                        tasks[index] = todo;
-                        index++;
-                        saveAll(tasks, index);
-
+                        tasks.add(todo);
+                        storage.save(tasks.asList());
 
                         ui.showLine();
                         ui.show("Got it. I've added this task:");
                         ui.show("  " + todo.toString());
-                        ui.show("Now you have " + index + " tasks in the list.");
+                        ui.show("Now you have " + tasks.size() + " tasks in the list.");
                         ui.showLine();
                         break;
                     case "deadline":
                         String[] dParts = arg.split(" /by ", 2);
-
 
                         if (Objects.equals(dParts[0], "")) {
                             ui.showMessage("Oh no! The description of a deadline cannot be empty.");
@@ -194,19 +196,19 @@ public class Toki {
                             break;
                         }
 
-
                         String desc = dParts[0].trim();
                         String byRaw = dParts.length > 1 ? dParts[1].trim() : "";
 
-
                         try {
                             LocalDate by = parseDateStrict(byRaw);
-                            tasks[index++] = new Deadline(desc, by);
-                            saveAll(tasks, index);
+                            Deadline deadline = new Deadline(desc, by);
+                            tasks.add(deadline);
+                            storage.save(tasks.asList());
+
                             ui.showLine();
                             ui.show("Got it. I've added this task:");
-                            ui.show("  " + tasks[index - 1].toString());
-                            ui.show("Now you have " + index + " tasks in the list.");
+                            ui.show("  " + deadline.toString());
+                            ui.show("Now you have " + tasks.size() + " tasks in the list.");
                             ui.showLine();
                         } catch (DateTimeParseException e) {
                             ui.showMessage("Oh no! Please use date format yyyy-MM-dd (e.g., 2025-11-15).");
@@ -240,18 +242,19 @@ public class Toki {
 
 
                         try {
-                            LocalDate fromEvent = parseDateStrict(fromRaw);  // ← same helper as Deadline
+                            LocalDate fromEvent = parseDateStrict(fromRaw);
                             LocalDate toEvent   = parseDateStrict(toRaw);
                             if (toEvent.isBefore(fromEvent)) {
                                 ui.showMessage("Oh no! 'to' must not be before 'from'.");
                                 break;
                             }
-                            tasks[index++] = new Event(descEvent, fromEvent, toEvent);
-                            saveAll(tasks, index);
+                            Event event = new Event(descEvent, fromEvent, toEvent);
+                            tasks.add(event);
+                            storage.save(tasks.asList());
                             ui.showLine();
                             ui.show("Got it. I've added this task:");
-                            ui.show("  " + tasks[index - 1]);
-                            ui.show("Now you have " + index + " tasks in the list.");
+                            ui.show("  " + event.toString());
+                            ui.show("Now you have " + tasks.size() + " tasks in the list.");
                             ui.showLine();
                         } catch (DateTimeParseException e) {
                             ui.showMessage("Oh no! Use date format yyyy-MM-dd (e.g., 2025-09-01).");
@@ -261,25 +264,20 @@ public class Toki {
                         if (Objects.equals(arg, "")) {
                             ui.showMessage("Oh no! You need to specify which task to delete.");
                             break;
-                        } else if (Integer.parseInt(arg) > index || Integer.parseInt(arg) < 1) {
+                        } else if (Integer.parseInt(arg) > tasks.size() || Integer.parseInt(arg) < 1) {
                             ui.showMessage("Oh no! That is an invalid task index.");
                             break;
                         }
 
-
-                        int deleteInt = Integer.parseInt(arg);
-                        Task deleteTask = tasks[deleteInt - 1];
-                        for (int i = deleteInt; i < index; i++){
-                            tasks[i - 1] = tasks[i];
-                        }
-                        index--;
-                        saveAll(tasks, index);
-
+                        int deleteInt = Integer.parseInt(arg) - 1;
+                        Task deletedTask = tasks.get(deleteInt);
+                        tasks.delete(deleteInt);
+                        storage.save(tasks.asList());
 
                         ui.showLine();
                         ui.show("Okay, I've removed this task:");
-                        ui.show("  " + deleteTask.toString());
-                        ui.show("Now you have " + index + " tasks in the list.");
+                        ui.show("  " + deletedTask.toString());
+                        ui.show("Now you have " + tasks.size() + " tasks in the list.");
                         ui.showLine();
                         break;
                     default:
@@ -289,15 +287,17 @@ public class Toki {
 
 
             }
+        } catch (TokiException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public static void main(String[] args) {
-        new Toki().run();
+        new Toki("data/toki.txt").run();
     }
 
 }
 
 
 
-}
+

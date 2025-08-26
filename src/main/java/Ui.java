@@ -13,6 +13,8 @@ public class Ui {
         return scanner.nextLine();
     }
 
+
+
     public void show(String s) { System.out.println("    " + s); }
     public void showLine() { System.out.println(LINE); }
     public void showWelcome() {
@@ -22,14 +24,10 @@ public class Ui {
         showLine();
     }
     public void showBye() {
-        showLine();
         show("Bye. Hope to see you again soon!");
-        showLine();
     }
     public void showMessage(String s) {
-        showLine();
         show(s);
-        showLine();
     }
     public void showMessages(String[] s) {
         showLine();
@@ -40,9 +38,8 @@ public class Ui {
     }
 
     public void showError(String s) {
-        showLine();
-        show("Oh no! We detected an error. \n" + "Error Message: " + s);
-        showLine();
+        show("Oh no! We detected an error.");
+        show("Error Message: " + s);
     }
 
     public void showLoadingError() {

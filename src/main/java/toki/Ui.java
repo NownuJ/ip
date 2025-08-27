@@ -2,6 +2,13 @@ package toki;
 
 import java.util.Scanner;
 
+/**
+ * Handles all user interaction.
+ * <p>
+ * Responsible for displaying messages, prompts, and errors to the user,
+ * and reading input lines from the console.
+ */
+
 public class Ui {
 
     private static final String LINE = "____________________________________________________________";
@@ -15,8 +22,6 @@ public class Ui {
         return scanner.nextLine();
     }
 
-
-
     public void show(String s) { System.out.println("    " + s); }
     public void showLine() { System.out.println(LINE); }
     public void showWelcome() {
@@ -27,16 +32,6 @@ public class Ui {
     }
     public void showBye() {
         show("Bye. Hope to see you again soon!");
-    }
-    public void showMessage(String s) {
-        show(s);
-    }
-    public void showMessages(String[] s) {
-        showLine();
-        for (int i = 0; i < s.length; i++) {
-            show(s[i] + "\n");
-        }
-        showLine();
     }
 
     public void showError(String s) {

@@ -1,9 +1,6 @@
 package toki;
 
-import toki.task.Deadline;
-import toki.task.Event;
-import toki.task.Task;
-import toki.task.Todo;
+import toki.task.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +11,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles persistence of tasks to and from disk.
+ * <p>
+ * Reads tasks from the save file on startup and writes the current {@link TaskList}
+ * after mutating commands. The storage format is a simple line-based representation.
+ */
+
 public class Storage {
     //deals with loading tasks from the file and saving tasks in the file
 
@@ -23,6 +27,12 @@ public class Storage {
         this.path = Path.of(path);
     }
 
+    /**
+     * Saves the given tasks to the backing file.
+     *
+     * @param tasks the tasks to persist
+     * @throws TokiException if writing to disk fails
+     */
     public void save(List<Task> tasks) throws TokiException {
         try {
             Files.createDirectories(path.getParent());
@@ -36,6 +46,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the backing file.
+     *
+     * @return a List<Task> containing all persisted tasks
+     * @throws TokiException if the file is missing or malformed
+     */
     public List<Task> load() throws TokiException {
         if (!Files.exists(path)) {
             return new ArrayList<>();
@@ -59,6 +75,20 @@ public class Storage {
         }
     }
 
+    /**
+     * Converts a single line of text from the save file into a {@link Task} object.
+     * <p>
+     * The line is expected to be in the format:
+     * <ul>
+     *   <li>{@code T | done | description}</li>
+     *   <li>{@code D | done | description | yyyy-MM-dd}</li>
+     *   <li>{@code E | done | description | yyyy-MM-dd | yyyy-MM-dd}</li>
+     * </ul>
+     * where {@code done} is {@code "1"} for completed tasks or {@code "0"} otherwise.
+     *
+     * @param line the raw line from the data file
+     * @return the corresponding {@link Task}, or {@code null} if the type tag is unrecognised
+     */
     private static Task fromLine(String line) {
         String[] p = line.split("\\s*\\|\\s*");
         // p[0]=type, p[1]=done, others=fields
@@ -82,6 +112,21 @@ public class Storage {
         return t;
     }
 
+    /**
+     * Serializes a {@link Task} object into its line representation for storage.
+     * <p>
+     * The returned string uses the same pipe-delimited format expected by
+     * {@link #fromLine(String)}:
+     * <ul>
+     *   <li>{@code T | done | description}</li>
+     *   <li>{@code D | done | description | yyyy-MM-dd}</li>
+     *   <li>{@code E | done | description | yyyy-MM-dd | yyyy-MM-dd}</li>
+     * </ul>
+     * where {@code done} is {@code "1"} if the task is completed or {@code "0"} otherwise.
+     *
+     * @param t the task to convert
+     * @return the string representation to be written into the data file
+     */
     private static String toLine(Task t) {
         String done = t.getIsDone() ? "1" : "0";
         if (t instanceof Todo) {

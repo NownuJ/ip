@@ -3,6 +3,12 @@ package toki.command;
 import toki.*;
 import toki.task.*;
 
+/**
+ * Marks the task at the specified 1-based index as done.
+ * <p>
+ * Syntax: {@code mark INDEX}
+ */
+
 public class MarkCommand extends Command{
     private final int index;
 
@@ -10,6 +16,14 @@ public class MarkCommand extends Command{
         this.index = index;
     }
 
+    /**
+     * Executes this command.
+     *
+     * @param tasks   the task list to mutate/query
+     * @param ui      the UI for showing messages
+     * @param storage the storage used to persist changes when necessary
+     * @throws TokiException if the command cannot be executed due to user error
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         //operation

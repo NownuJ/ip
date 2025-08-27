@@ -4,6 +4,12 @@ import java.time.LocalDate;
 import toki.*;
 import toki.task.*;
 
+/**
+ * Adds a new {@link toki.task.Event} to the list.
+ * <p>
+ * Syntax: {@code event DESCRIPTION /from DATE /to DATE}
+ */
+
 public class EventCommand extends Command{
 
     private final String desc;
@@ -16,6 +22,14 @@ public class EventCommand extends Command{
         this.to = to;
     }
 
+    /**
+     * Executes this command.
+     *
+     * @param tasks   the task list to mutate/query
+     * @param ui      the UI for showing messages
+     * @param storage the storage used to persist changes when necessary
+     * @throws TokiException if the command cannot be executed due to user error
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         Event event = new Event(desc, from, to);

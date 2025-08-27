@@ -34,12 +34,13 @@ java {
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
+    mainClass.set("toki.Toki")
 }
 
 shadowJar {
     archiveBaseName = "duke"
     archiveClassifier = null
+    archiveFileName = 'toki.jar'
 }
 
 run{

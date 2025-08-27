@@ -4,6 +4,12 @@ import java.time.LocalDate;
 import toki.*;
 import toki.task.*;
 
+/**
+ * Adds a new {@link toki.task.Deadline} to the list.
+ * <p>
+ * Syntax: {@code deadline DESCRIPTION /by DATE}
+ */
+
 public class DeadlineCommand extends Command{
 
     private final String desc;
@@ -14,6 +20,14 @@ public class DeadlineCommand extends Command{
         this.by = by;
     }
 
+    /**
+     * Executes this command.
+     *
+     * @param tasks   the task list to mutate/query
+     * @param ui      the UI for showing messages
+     * @param storage the storage used to persist changes when necessary
+     * @throws TokiException if the command cannot be executed due to user error
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         Deadline deadline = new Deadline(desc, by);

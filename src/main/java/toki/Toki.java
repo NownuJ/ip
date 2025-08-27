@@ -3,16 +3,33 @@ package toki;
 import toki.task.*;
 import toki.command.*;
 
+/**
+ * Entry point of the Toki application.
+ * <p>
+ * Wires together the {@link Storage}, {@link Ui}, {@link Parser}, and {@link TaskList},
+ * loads previously saved tasks (if any), and runs the read&ndash;eval&ndash;print loop that
+ * accepts user commands and executes them until exit.
+ */
+
 public class Toki {
 
-    private Storage storage; //deals with loading tasks from the file and saving tasks in the file
-    private TaskList tasks; //contains the task list e.g., it has operations to add/delete tasks in the list
-    private Ui ui; //deals with interactions with the user
+    /** Deals with loading tasks from the file and saving tasks to the file. */
+    private Storage storage;
 
-    //will move to parser later
-    private static final String UNMARKED = "[ ]";
-    private static final String MARKED = "[X]";
+    /** The in-memory task list containing all user tasks. */
+    private TaskList tasks;
 
+    /** Handles interactions with the user (input and output). */
+    private Ui ui;
+
+    /**
+     * Constructs a new {@code Toki} application instance.
+     * <p>
+     * Loads tasks from the given file path (if available). If loading fails,
+     * initializes an empty task list and shows a loading error via the {@link Ui}.
+     *
+     * @param filePath path to the data file used for persistence
+     */
     public Toki(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -25,6 +42,13 @@ public class Toki {
 
     }
 
+    /**
+     * Runs the main loop of the application.
+     * <p>
+     * Continuously reads user commands, parses them into {@link Command} objects,
+     * executes them against the {@link TaskList}, and persists changes.
+     * Terminates when an exit command is issued.
+     */
     private void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -43,6 +67,11 @@ public class Toki {
         }
     }
 
+    /**
+     * Application entry point.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         new Toki("data/toki.txt").run();
     }

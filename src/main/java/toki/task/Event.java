@@ -3,6 +3,12 @@ package toki.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * A task that occurs within a time window.
+ * <p>
+ * Example command: {@code event project meeting /from 2025-09-01 /to 2025-09-03}
+ */
+
 public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;

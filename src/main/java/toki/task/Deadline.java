@@ -3,6 +3,11 @@ package toki.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * A task that must be completed by a specific date/time.
+ * <p>
+ * Example command: {@code deadline return book /by 2025-09-01}
+ */
 
 public class Deadline extends Task {
     protected LocalDate by;
@@ -21,6 +26,5 @@ public class Deadline extends Task {
     public LocalDate getBy() {
         return this.by;
     }
-
 
 }

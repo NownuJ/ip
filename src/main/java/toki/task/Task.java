@@ -1,5 +1,12 @@
 package toki.task;
 
+/**
+ * Abstract base type for a task.
+ * <p>
+ * Encapsulates common state such as description and completion status,
+ * and provides APIs used by concrete task types ({@link Todo}, {@link Deadline}, {@link Event}).
+ */
+
 public class Task {
     protected String description;
     protected boolean isDone;

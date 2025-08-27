@@ -5,8 +5,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import toki.command.*;
 
+/**
+ * Parses raw user input into executable {@link toki.command.Command} objects.
+ * <p>
+ * Performs tokenization/validation of arguments and constructs the appropriate command
+ * (e.g., {@code todo}, {@code deadline}, {@code event}, {@code list}, {@code mark}, etc.).
+ * Throws {@link TokiException} on invalid syntax.
+ */
+
 public class Parser {
-    //deals with making sense of the user command
 
     private static LocalDate parseDate(String s) throws TokiException {
         try {
@@ -17,6 +24,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a raw input line into a {@link toki.command.Command}.
+     *
+     * @param full the raw user input
+     * @return the command to execute
+     * @throws TokiException if the input is invalid or incomplete
+     */
     public static Command parse(String full) throws TokiException {
         String[] parts = full.trim().split("\\s+", 2);
         String cmd = parts[0].toLowerCase();

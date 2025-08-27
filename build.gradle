@@ -27,6 +27,12 @@ test {
     }
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 application {
     mainClass.set("seedu.duke.Duke")
 }

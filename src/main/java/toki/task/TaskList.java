@@ -57,6 +57,22 @@ public class TaskList {
     }
 
     /**
+     * Finds tasks with keyword on their description.
+     *
+     * @param keyword the keyword to find among the description
+     */
+    public List<Task> find(String keyword) {
+        String needle = keyword.trim().toLowerCase();
+        List<Task> out = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.getDescription().toLowerCase().contains(needle)) {
+                out.add(t);
+            }
+        }
+        return out;
+    }
+
+    /**
      * Deletes and returns the task at the given one-based index.
      *
      * @param idx1 one-based index of the task (1 = first task)

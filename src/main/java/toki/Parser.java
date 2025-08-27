@@ -55,41 +55,47 @@ public class Parser {
                 if (arg.isBlank()) throw new TokiException("The description of a todo cannot be empty.");
                 return new TodoCommand(arg);
 
-            case "deadline": {
+            case "deadline":
                 String[] d = arg.split("/by", 2);
                 if (d.length < 2 || d[0].isBlank() || d[1].isBlank())
                     throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
                 return new DeadlineCommand(d[0], parseDate(d[1]));
-            }
 
-            case "event": {
+
+            case "event":
                 String[] a = arg.split("/from", 2);
                 String[] b = (a.length > 1) ? a[1].split("/to", 2) : new String[]{"", ""};
                 if (a[0].isBlank() || b.length < 2 || b[0].isBlank() || b[1].isBlank())
                     throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
                 return new EventCommand(a[0], parseDate(b[0]), parseDate(b[1]));
-            }
 
-            case "mark": {
+
+            case "mark":
                 if (arg.isBlank()) throw new TokiException("Format of the Command is: delete <index>");
                 int idxm = Integer.parseInt(arg.trim());
                 if (idxm <= 0) throw new TokiException("Index must be positive.");
                 return new MarkCommand(idxm);
-            }
 
-            case "unmark":{
+
+            case "unmark":
                 if (arg.isBlank()) throw new TokiException("Format of the Command is: delete <index>");
                 int idxu = Integer.parseInt(arg.trim());
                 if (idxu <= 0) throw new TokiException("Index must be positive.");
                 return new UnmarkCommand(idxu);
-            }
 
-            case "delete": {
+
+            case "delete":
                 if (arg.isBlank()) throw new TokiException("Format of the Command is: delete <index>");
                 int idxd = Integer.parseInt(arg.trim());
                 if (idxd <= 0) throw new TokiException("Index must be positive.");
                 return new DeleteCommand(idxd);
+
+
+            case "find":
+            if (arg.isBlank()) {
+                throw new TokiException("Format of the Command is: delete <index>");
             }
+            return new FindCommand(arg);
 
             default: throw new TokiException("This is an unknown command.");
         }

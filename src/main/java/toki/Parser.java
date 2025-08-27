@@ -5,6 +5,7 @@ import toki.command.DeadlineCommand;
 import toki.command.DeleteCommand;
 import toki.command.EventCommand;
 import toki.command.ExitCommand;
+import toki.command.FindCommand;
 import toki.command.ListCommand;
 import toki.command.MarkCommand;
 import toki.command.TodoCommand;
@@ -90,12 +91,11 @@ public class Parser {
                 if (idxd <= 0) throw new TokiException("Index must be positive.");
                 return new DeleteCommand(idxd);
 
-
             case "find":
-            if (arg.isBlank()) {
-                throw new TokiException("Format of the Command is: delete <index>");
-            }
-            return new FindCommand(arg);
+                if (arg.isBlank()) {
+                    throw new TokiException("Format of the Command is: delete <index>");
+                }
+                return new FindCommand(arg);
 
             default: throw new TokiException("This is an unknown command.");
         }

@@ -23,6 +23,17 @@ public class TaskList {
         tasks.add(t);
     }
 
+    public List<Task> find(String keyword) {
+        String needle = keyword.trim().toLowerCase();
+        List<Task> out = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.getDescription().toLowerCase().contains(needle)) {
+                out.add(t);
+            }
+        }
+        return out;
+    }
+
     public Task delete(int idx1) {
         return tasks.remove(idx1 - 1);
     }

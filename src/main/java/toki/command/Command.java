@@ -1,7 +1,9 @@
 package toki.command;
 
-import toki.*;
-import toki.task.*;
+import toki.TokiException;
+import toki.Ui;
+import toki.Storage;
+import toki.task.TaskList;
 
 /**
  * Represents an executable user command.
@@ -23,5 +25,7 @@ public abstract class Command {
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException;
 
-    public boolean isExit() { return false; }
+    public boolean isExit() {
+        return false;
+    }
 }

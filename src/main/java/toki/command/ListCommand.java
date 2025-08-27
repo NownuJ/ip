@@ -1,7 +1,9 @@
 package toki.command;
 
-import toki.*;
-import toki.task.*;
+import toki.Ui;
+import toki.Storage;
+import toki.task.Task;
+import toki.task.TaskList;
 
 /**
  * Displays all tasks in the current {@link toki.task.TaskList}.
@@ -17,10 +19,9 @@ public class ListCommand extends Command{
      * @param tasks   the task list to mutate/query
      * @param ui      the UI for showing messages
      * @param storage the storage used to persist changes when necessary
-     * @throws TokiException if the command cannot be executed due to user error
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.show("Here are the tasks in your list:");
         for (int i =0; i < tasks.size(); i++) {
             Task t = tasks.get(i);

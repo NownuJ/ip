@@ -22,16 +22,35 @@ public class Ui {
         return scanner.nextLine();
     }
 
-    public void show(String s) { System.out.println("    " + s); }
-    public void showLine() { System.out.println(LINE); }
+    public void show(String s) {
+        System.out.println("    " + s);
+    }
+
+    public void showLine() {
+        System.out.println(LINE);
+    }
+
     public void showWelcome() {
         showLine();
         show("Hello! I'm toki.Toki");
         show("What can I do for you?");
         showLine();
     }
+
     public void showBye() {
         show("Bye. Hope to see you again soon!");
+    }
+
+    public void showMessage(String s) {
+        show(s);
+    }
+
+    public void showMessages(String[] s) {
+        showLine();
+        for (int i = 0; i < s.length; i++) {
+            show(s[i] + "\n");
+        }
+        showLine();
     }
 
     public void showError(String s) {
@@ -42,7 +61,5 @@ public class Ui {
     public void showLoadingError() {
         System.out.println("(warn) Could not load saved data. Starting with an empty list.");
     }
-
-
 
 }

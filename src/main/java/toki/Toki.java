@@ -1,7 +1,7 @@
 package toki;
 
-import toki.task.*;
-import toki.command.*;
+import toki.command.Command;
+import toki.task.TaskList;
 
 /**
  * Entry point of the Toki application.

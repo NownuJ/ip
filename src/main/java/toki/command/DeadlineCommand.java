@@ -1,8 +1,11 @@
 package toki.command;
 
 import java.time.LocalDate;
-import toki.*;
-import toki.task.*;
+import toki.TokiException;
+import toki.Ui;
+import toki.Storage;
+import toki.task.Deadline;
+import toki.task.TaskList;
 
 /**
  * Adds a new {@link toki.task.Deadline} to the list.

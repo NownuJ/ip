@@ -1,8 +1,11 @@
 package toki.command;
 
 import java.time.LocalDate;
-import toki.*;
-import toki.task.*;
+import toki.TokiException;
+import toki.Ui;
+import toki.Storage;
+import toki.task.Event;
+import toki.task.TaskList;
 
 public class EventCommand extends Command{
 

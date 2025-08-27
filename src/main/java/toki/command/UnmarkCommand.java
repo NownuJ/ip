@@ -1,7 +1,9 @@
 package toki.command;
 
-import toki.*;
-import toki.task.*;
+import toki.TokiException;
+import toki.Ui;
+import toki.Storage;
+import toki.task.TaskList;
 
 public class UnmarkCommand extends Command{
     private final int index;
@@ -9,6 +11,7 @@ public class UnmarkCommand extends Command{
     public UnmarkCommand(int index) {
         this.index = index;
     }
+
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         //operation

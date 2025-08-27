@@ -1,7 +1,10 @@
 package toki.command;
 
-import toki.*;
-import toki.task.*;
+import toki.TokiException;
+import toki.Ui;
+import toki.Storage;
+import toki.task.Task;
+import toki.task.TaskList;
 
 public class DeleteCommand extends Command{
     private final int index;

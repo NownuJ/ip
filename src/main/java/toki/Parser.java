@@ -1,9 +1,19 @@
 package toki;
 
+import toki.command.Command;
+import toki.command.DeadlineCommand;
+import toki.command.DeleteCommand;
+import toki.command.EventCommand;
+import toki.command.ExitCommand;
+import toki.command.ListCommand;
+import toki.command.MarkCommand;
+import toki.command.TodoCommand;
+import toki.command.UnmarkCommand;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import toki.command.*;
+
 
 public class Parser {
     //deals with making sense of the user command

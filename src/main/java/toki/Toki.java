@@ -1,17 +1,13 @@
 package toki;
 
-import toki.task.*;
-import toki.command.*;
+import toki.command.Command;
+import toki.task.TaskList;
 
 public class Toki {
 
-    private Storage storage; //deals with loading tasks from the file and saving tasks in the file
-    private TaskList tasks; //contains the task list e.g., it has operations to add/delete tasks in the list
-    private Ui ui; //deals with interactions with the user
-
-    //will move to parser later
-    private static final String UNMARKED = "[ ]";
-    private static final String MARKED = "[X]";
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
     public Toki(String filePath) {
         ui = new Ui();

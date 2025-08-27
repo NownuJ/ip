@@ -1,9 +1,12 @@
 package toki.command;
 
-import toki.*;
-import toki.task.*;
+import toki.Ui;
+import toki.Storage;
+import toki.task.Task;
+import toki.task.TaskList;
 
 public class ListCommand extends Command{
+
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.show("Here are the tasks in your list:");

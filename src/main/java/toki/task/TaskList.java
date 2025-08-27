@@ -27,7 +27,7 @@ public class TaskList {
         return tasks.remove(idx1 - 1);
     }
     public void mark(int idx1) {
-        tasks.get(idx1).markAsDone();
+        tasks.get(idx1 - 1).markAsDone();
     }
     public void unmark(int idx1) {
         tasks.get(idx1 - 1).markAsUndone();

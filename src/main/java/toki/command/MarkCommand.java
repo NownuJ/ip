@@ -7,7 +7,7 @@ public class MarkCommand extends Command{
     private final int index;
 
     public MarkCommand(int index) {
-        this.index = index - 1;
+        this.index = index;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class Toki {
         boolean isExit = false;
         while (!isExit) {
             try {
-                String input  = ui.readCommand();
+                String input = ui.readCommand();
                 ui.showLine();
                 Command c = Parser.parse(input);
                 c.execute(tasks, ui, storage);

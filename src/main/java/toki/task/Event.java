@@ -13,6 +13,13 @@ public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
 
+    /**
+     * Creates a {@code Event} with description, start date and end date of the event.
+     *
+     * @param description description of the task
+     * @param from LocalDate that the event starts from
+     * @param to LocalDate that the event ends on
+     */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;

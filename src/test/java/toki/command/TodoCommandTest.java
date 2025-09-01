@@ -1,31 +1,37 @@
 package toki.command;
 
-import toki.*;
-import toki.task.*;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import toki.Storage;
+import toki.Ui;
+import toki.task.Task;
+import toki.task.TaskList;
+import toki.task.Todo;
 
 public class TodoCommandTest {
 
     static class FakeUi extends Ui {
         final List<String> lines = new ArrayList<>();
         @Override
-        public void show(String s) { lines.add(s); }
+        public void show(String s) {
+            lines.add(s);
+        }
     }
 
     static class FakeStorage extends Storage {
-        List<Task> lastSaved;
+        private List<Task> lastSaved;
 
-        public FakeStorage() { super("build/test-tmp/todo.txt"); }
+        public FakeStorage() {
+            super("build/test-tmp/todo.txt");
+        }
 
-        // ---- IMPORTANT ----
-        // Your TodoCommand currently calls: storage.save(tasks.asList())
-        // so Storage must have a `save(List<Task>)`. If yours is `save(TaskList)`,
-        // change the override accordingly.
         @Override
         public void save(List<Task> list) {
             this.lastSaved = new ArrayList<>(list);
@@ -33,7 +39,7 @@ public class TodoCommandTest {
     }
 
     @Test
-    void execute_addsTask_savesSnapshot_andPrintsUi() throws Exception {
+    void execute_addsTask_savesSnapshotAndPrintsUi() throws Exception {
         TaskList tasks = new TaskList();
         FakeUi ui = new FakeUi();
         FakeStorage storage = new FakeStorage();

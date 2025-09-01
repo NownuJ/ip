@@ -1,8 +1,8 @@
 package toki.command;
 
+import toki.Storage;
 import toki.TokiException;
 import toki.Ui;
-import toki.Storage;
 import toki.task.TaskList;
 
 /**
@@ -11,7 +11,7 @@ import toki.task.TaskList;
  * Syntax: {@code mark INDEX}
  */
 
-public class MarkCommand extends Command{
+public class MarkCommand extends Command {
     private final int index;
 
     public MarkCommand(int index) {

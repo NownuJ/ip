@@ -1,7 +1,5 @@
 package toki;
 
-import toki.task.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +8,12 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import toki.task.Deadline;
+import toki.task.Event;
+import toki.task.Task;
+import toki.task.TaskList;
+import toki.task.Todo;
 
 /**
  * Handles persistence of tasks to and from disk.
@@ -49,7 +53,7 @@ public class Storage {
     /**
      * Loads tasks from the backing file.
      *
-     * @return a List<Task> containing all persisted tasks
+     * @return a {@code List<Task>} containing all persisted tasks
      * @throws TokiException if the file is missing or malformed
      */
     public List<Task> load() throws TokiException {
@@ -93,17 +97,17 @@ public class Storage {
         String[] p = line.split("\\s*\\|\\s*");
         Task t;
         switch (p[0]) {
-            case "T":
-                t = new Todo(p[2]);
-                break;
-            case "D":
-                t = new Deadline(p[2], LocalDate.parse(p[3]));
-                break;
-            case "E":
-                t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
-                break;
-            default:
-                return null;
+        case "T":
+            t = new Todo(p[2]);
+            break;
+        case "D":
+            t = new Deadline(p[2], LocalDate.parse(p[3]));
+            break;
+        case "E":
+            t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
+            break;
+        default:
+            return null;
         }
         if ("1".equals(p[1])) {
             t.markAsDone();

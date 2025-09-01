@@ -30,6 +30,9 @@ public class Ui {
         System.out.println(LINE);
     }
 
+    /**
+     * Shows the welcome message for the application.
+     */
     public void showWelcome() {
         showLine();
         show("Hello! I'm toki.Toki");
@@ -45,14 +48,11 @@ public class Ui {
         show(s);
     }
 
-    public void showMessages(String[] s) {
-        showLine();
-        for (int i = 0; i < s.length; i++) {
-            show(s[i] + "\n");
-        }
-        showLine();
-    }
-
+    /**
+     * Shows that an error has occurred, with respective error message.
+     *
+     * @param s Error message that will be displayed
+     */
     public void showError(String s) {
         show("Oh no! We detected an error.");
         show("Error Message: " + s);

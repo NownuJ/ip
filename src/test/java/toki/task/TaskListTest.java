@@ -1,8 +1,13 @@
 package toki.task;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
+
+import org.junit.jupiter.api.Test;
 
 public class TaskListTest {
     @Test
@@ -13,7 +18,7 @@ public class TaskListTest {
     }
 
     @Test
-    void get_ReturnsSameObject() {
+    void get_taskAdded_returnsSameObject() {
         TaskList tasks = new TaskList();
         Todo t1 = new Todo("read book");
         tasks.add(t1);
@@ -21,7 +26,7 @@ public class TaskListTest {
     }
 
     @Test
-    void delete_RemovesAndReturnsItem() {
+    void delete_taskDeleted_removesAndReturnsItem() {
         TaskList tasks = new TaskList();
         Todo t1 = new Todo("a");
         Todo t2 = new Todo("b");

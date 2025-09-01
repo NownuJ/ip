@@ -1,8 +1,8 @@
 package toki.command;
 
+import toki.Storage;
 import toki.TokiException;
 import toki.Ui;
-import toki.Storage;
 import toki.task.Task;
 import toki.task.TaskList;
 
@@ -12,7 +12,7 @@ import toki.task.TaskList;
  * Syntax: {@code delete INDEX}
  */
 
-public class DeleteCommand extends Command{
+public class DeleteCommand extends Command {
     private final int index;
 
     public DeleteCommand(int index) {

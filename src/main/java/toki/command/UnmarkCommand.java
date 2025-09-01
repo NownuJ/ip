@@ -1,8 +1,8 @@
 package toki.command;
 
+import toki.Storage;
 import toki.TokiException;
 import toki.Ui;
-import toki.Storage;
 import toki.task.TaskList;
 
 /**
@@ -11,7 +11,7 @@ import toki.task.TaskList;
  * Syntax: {@code unmark INDEX}
  */
 
-public class UnmarkCommand extends Command{
+public class UnmarkCommand extends Command {
     private final int index;
 
     public UnmarkCommand(int index) {

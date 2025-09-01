@@ -1,8 +1,8 @@
 package toki.command;
 
+import toki.Storage;
 import toki.TokiException;
 import toki.Ui;
-import toki.Storage;
 import toki.task.TaskList;
 import toki.task.Todo;
 
@@ -13,7 +13,7 @@ import toki.task.Todo;
  * Syntax: {@code todo DESCRIPTION}
  */
 
-public class TodoCommand extends Command{
+public class TodoCommand extends Command {
 
     private final String desc;
 

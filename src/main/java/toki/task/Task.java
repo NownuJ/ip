@@ -11,6 +11,11 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Creates a {@code Task} with description.
+     *
+     * @param description description of the Task
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;

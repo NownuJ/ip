@@ -1,9 +1,10 @@
 package toki.command;
 
 import java.time.LocalDate;
+
+import toki.Storage;
 import toki.TokiException;
 import toki.Ui;
-import toki.Storage;
 import toki.task.Event;
 import toki.task.TaskList;
 
@@ -13,12 +14,19 @@ import toki.task.TaskList;
  * Syntax: {@code event DESCRIPTION /from DATE /to DATE}
  */
 
-public class EventCommand extends Command{
+public class EventCommand extends Command {
 
     private final String desc;
     private final LocalDate from;
     private final LocalDate to;
 
+    /**
+     * Creates a {@code EventCommand} with description, start date and end date of the event.
+     *
+     * @param desc description of the task
+     * @param from LocalDate that the event starts from
+     * @param to LocalDate that the event ends on
+     */
     public EventCommand(String desc, LocalDate from, LocalDate to) {
         this.desc = desc;
         this.from = from;

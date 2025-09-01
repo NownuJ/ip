@@ -1,9 +1,10 @@
 package toki.command;
 
 import java.time.LocalDate;
+
+import toki.Storage;
 import toki.TokiException;
 import toki.Ui;
-import toki.Storage;
 import toki.task.Deadline;
 import toki.task.TaskList;
 
@@ -13,11 +14,17 @@ import toki.task.TaskList;
  * Syntax: {@code deadline DESCRIPTION /by DATE}
  */
 
-public class DeadlineCommand extends Command{
+public class DeadlineCommand extends Command {
 
     private final String desc;
     private final LocalDate by;
 
+    /**
+     * Creates a {@code DeadlineCommand} with description, and date due by.
+     *
+     * @param desc description of the deadline
+     * @param by LocalDate that the deadline is due by
+     */
     public DeadlineCommand(String desc, LocalDate by) {
         this.desc = desc;
         this.by = by;

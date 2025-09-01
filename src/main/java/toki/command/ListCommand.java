@@ -1,7 +1,7 @@
 package toki.command;
 
-import toki.Ui;
 import toki.Storage;
+import toki.Ui;
 import toki.task.Task;
 import toki.task.TaskList;
 
@@ -11,7 +11,7 @@ import toki.task.TaskList;
  * Syntax: {@code list}
  */
 
-public class ListCommand extends Command{
+public class ListCommand extends Command {
 
     /**
      * Executes this command.
@@ -23,9 +23,9 @@ public class ListCommand extends Command{
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.show("Here are the tasks in your list:");
-        for (int i =0; i < tasks.size(); i++) {
+        for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            ui.show((i+1) + "." + t.toString());
+            ui.show((i + 1) + "." + t.toString());
         }
     }
 }

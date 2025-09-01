@@ -12,6 +12,12 @@ import java.time.format.DateTimeFormatter;
 public class Deadline extends Task {
     protected LocalDate by;
 
+    /**
+     * Creates a {@code Deadline} with description, and date due by.
+     *
+     * @param description description of the deadline
+     * @param by LocalDate that the deadline is due by
+     */
     public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by;

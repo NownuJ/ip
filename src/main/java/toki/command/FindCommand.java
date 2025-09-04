@@ -22,15 +22,21 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
 
+        String response;
         List<Task> matches = tasks.find(keyword);
         ui.show("Here are the matching tasks in your list:");
-        for (int i = 0; i < matches.size(); i++) {
-            ui.show((i + 1) + "." + matches.get(i));
-        }
+
         if (matches.isEmpty()) {
-            ui.show("There are no matching tasks in your list.");
+            response = "Here are the matching tasks in your list:\n"
+                        + "There are no matching tasks in your list.";
+        } else {
+            response = "Here are the matching tasks in your list:\n";
+            for (int i = 0; i < matches.size(); i++) {
+                response = response.concat((i + 1) + "." + matches.get(i) + "\n");
+            }
         }
+        return response;
     }
 }

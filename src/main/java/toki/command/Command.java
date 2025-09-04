@@ -23,7 +23,7 @@ public abstract class Command {
      * @param storage the storage used to persist changes when necessary
      * @throws TokiException if the command cannot be executed due to user error
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException;
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException;
 
     public boolean isExit() {
         return false;

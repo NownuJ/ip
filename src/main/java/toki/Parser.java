@@ -52,7 +52,7 @@ public class Parser {
             return new ListCommand();
         case "todo":
             if (arg.isBlank()) {
-                throw new TokiException("Format of the Command is: deadline <desc>");
+                throw new TokiException("Format of the Command is: todo <desc>");
             }
             return new TodoCommand(arg);
 

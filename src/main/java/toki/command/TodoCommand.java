@@ -30,14 +30,14 @@ public class TodoCommand extends Command {
      * @throws TokiException if the command cannot be executed due to user error
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         //operation
         Todo todo = new Todo(desc);
         tasks.add(todo);
         storage.save(tasks.asList());
-
-        ui.show("Got it. I've added this task:");
-        ui.show("  " + todo.toString());
-        ui.show("Now you have " + tasks.size() + " tasks in the list.");
+        String response = "Got it. I've added this task:\n"
+                    + "  " + todo.toString() + "\n"
+                    + "Now you have " + tasks.size() + " tasks in the list.";
+        return response;
     }
 }

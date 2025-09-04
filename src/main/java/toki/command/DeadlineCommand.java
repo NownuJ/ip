@@ -39,13 +39,13 @@ public class DeadlineCommand extends Command {
      * @throws TokiException if the command cannot be executed due to user error
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         Deadline deadline = new Deadline(desc, by);
         tasks.add(deadline);
         storage.save(tasks.asList());
-
-        ui.show("Got it. I've added this task:");
-        ui.show("  " + deadline.toString());
-        ui.show("Now you have " + tasks.size() + " tasks in the list.");
+        String response = "Got it. I've added this task:\n"
+                    + "  " + deadline.toString() + "\n"
+                    + "Now you have " + tasks.size() + " tasks in the list.";
+        return response;
     }
 }

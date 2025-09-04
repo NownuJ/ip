@@ -27,12 +27,13 @@ public class MarkCommand extends Command {
      * @throws TokiException if the command cannot be executed due to user error
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         //operation
         tasks.mark(index);
         storage.save(tasks.asList());
 
-        ui.show("Nice! I've marked this task as done:");
-        ui.show("  " + tasks.get(index).toString());
+        String response = "Nice! I've marked this task as done:\n"
+                    + "  " + tasks.get(index).toString();
+        return response;
     }
 }

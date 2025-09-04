@@ -21,11 +21,12 @@ public class ListCommand extends Command {
      * @param storage the storage used to persist changes when necessary
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.show("Here are the tasks in your list:");
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        String response = "Here are the tasks in your list:\n";
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            ui.show((i + 1) + "." + t.toString());
+            response = response.concat((i + 1) + "." + t.toString() + "\n");
         }
+        return response;
     }
 }

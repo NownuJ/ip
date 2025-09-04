@@ -42,13 +42,13 @@ public class EventCommand extends Command {
      * @throws TokiException if the command cannot be executed due to user error
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         Event event = new Event(desc, from, to);
         tasks.add(event);
         storage.save(tasks.asList());
-
-        ui.show("Got it. I've added this task:");
-        ui.show("  " + event.toString());
-        ui.show("Now you have " + tasks.size() + " tasks in the list.");
+        String response = "Got it. I've added this task:\n"
+                    + "  " + event.toString() + "\n"
+                    + "Now you have " + tasks.size() + " tasks in the list.";
+        return response;
     }
 }

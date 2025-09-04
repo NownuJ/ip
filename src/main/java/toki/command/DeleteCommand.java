@@ -27,13 +27,13 @@ public class DeleteCommand extends Command {
      * @param storage the storage used to persist changes when necessary
      * @throws TokiException if the command cannot be executed due to user error
      */
-    @Override public void execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+    @Override public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         Task deletedTask = tasks.get(index);
         tasks.delete(index);
         storage.save(tasks.asList());
-
-        ui.show("Okay, I've removed this task:");
-        ui.show("  " + deletedTask.toString());
-        ui.show("Now you have " + tasks.size() + " tasks in the list.");
+        String response = "Okay, I've removed this task: \n"
+                + "  " + deletedTask.toString() + "\n"
+                + "Now you have " + tasks.size() + " tasks in the list.";
+        return response;
     }
 }

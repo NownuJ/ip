@@ -49,7 +49,7 @@ public class Toki {
      * executes them against the {@link TaskList}, and persists changes.
      * Terminates when an exit command is issued.
      */
-    private void run() {
+    /*private void run() {
         ui.showWelcome();
         boolean isExit = false;
         while (!isExit) {
@@ -65,6 +65,15 @@ public class Toki {
                 ui.showLine();
             }
         }
+    }*/
+
+    public String getResponse(String input) throws TokiException{
+        try {
+            Command c = Parser.parse(input);
+            return c.execute(tasks, ui, storage);
+        } catch (TokiException e) {
+            return e.getMessage();
+        }
     }
 
     /**
@@ -72,11 +81,8 @@ public class Toki {
      *
      * @param args command-line arguments (unused)
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         new Toki("data/toki.txt").run();
-    }
+    }*/
 }
-
-
-
 

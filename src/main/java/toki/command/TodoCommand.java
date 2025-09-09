@@ -31,6 +31,8 @@ public class TodoCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "UI cannot be null";
         //operation
         Todo todo = new Todo(desc);
         tasks.add(todo);

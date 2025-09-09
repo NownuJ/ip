@@ -28,6 +28,8 @@ public class DeleteCommand extends Command {
      * @throws TokiException if the command cannot be executed due to user error
      */
     @Override public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "UI cannot be null";
         Task deletedTask = tasks.get(index);
         tasks.delete(index);
         storage.save(tasks.asList());

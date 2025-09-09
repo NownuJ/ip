@@ -28,6 +28,8 @@ public class EventCommand extends Command {
      * @param to LocalDate that the event ends on
      */
     public EventCommand(String desc, LocalDate from, LocalDate to) {
+        assert from != null : "From date should not be null";
+        assert to != null : "To date should not be null";
         this.desc = desc;
         this.from = from;
         this.to = to;
@@ -43,6 +45,8 @@ public class EventCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "UI cannot be null";
         Event event = new Event(desc, from, to);
         tasks.add(event);
         storage.save(tasks.asList());

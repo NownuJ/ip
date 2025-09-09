@@ -23,10 +23,22 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    /**
+     * Creates a {@code Deadline} with description, date due by, and time to be reminded on.
+     *
+     * @param description description of the deadline
+     * @param by LocalDate that the deadline is due by
+     * @param reminderTime LocalDate that the task will be reminded on
+     */
+    public Deadline(String description, LocalDate by, LocalDate reminderTime) {
+        super(description, reminderTime);
+        this.by = by;
+    }
+
     @Override
     public String toString() {
         String date = by.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
-        return "[D]" + super.toString() + " (by: " + date + ")";
+        return "[D]" + super.toString() + " (by: " + date + ")" + super.toStringReminderTime();
     }
 
     public LocalDate getBy() {

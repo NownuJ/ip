@@ -26,11 +26,26 @@ public class Event extends Task {
         this.to = to;
     }
 
+    /**
+     * Creates a {@code Event} with description, start date, end date of the event,
+     * and date for the task to be reminded on.
+     *
+     * @param description description of the task
+     * @param from LocalDate that the event starts from
+     * @param to LocalDate that the event ends on
+     * @param reminderTime LocalDate
+     */
+    public Event(String description, LocalDate from, LocalDate to, LocalDate reminderTime) {
+        super(description, reminderTime);
+        this.from = from;
+        this.to = to;
+    }
+
     @Override
     public String toString() {
         String fromDate = from.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
         String toDate = to.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
-        return "[E]" + super.toString() + " (from: " + fromDate + " to: " + toDate + ")";
+        return "[E]" + super.toString() + " (from: " + fromDate + " to: " + toDate + ")" + super.toStringReminderTime();
     }
 
     public LocalDate getFrom() {

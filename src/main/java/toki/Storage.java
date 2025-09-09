@@ -137,7 +137,7 @@ public class Storage {
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
             return String.join(" | ", "D", done, d.getDescription(), d.getBy().toString());
-        } else { // toki.task.Event
+        } else {
             Event e = (Event) t;
             return String.join(" | ", "E", done, e.getDescription(), e.getFrom().toString(), e.getTo().toString());
         }

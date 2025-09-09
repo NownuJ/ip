@@ -28,6 +28,8 @@ public class MarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "UI cannot be null";
         //operation
         tasks.mark(index);
         storage.save(tasks.asList());

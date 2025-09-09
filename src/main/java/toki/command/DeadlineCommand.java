@@ -26,6 +26,7 @@ public class DeadlineCommand extends Command {
      * @param by LocalDate that the deadline is due by
      */
     public DeadlineCommand(String desc, LocalDate by) {
+        assert by != null : "Deadline date should not be null";
         this.desc = desc;
         this.by = by;
     }
@@ -40,6 +41,8 @@ public class DeadlineCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "UI cannot be null";
         Deadline deadline = new Deadline(desc, by);
         tasks.add(deadline);
         storage.save(tasks.asList());

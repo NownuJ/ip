@@ -12,8 +12,11 @@ import toki.command.ExitCommand;
 import toki.command.FindCommand;
 import toki.command.ListCommand;
 import toki.command.MarkCommand;
+import toki.command.RemindCommand;
+import toki.command.RemindersCommand;
 import toki.command.TodoCommand;
 import toki.command.UnmarkCommand;
+import toki.command.UnremindCommand;
 
 /**
  * Parses raw user input into executable {@link toki.command.Command} objects.
@@ -118,7 +121,39 @@ public class Parser {
             }
             return new FindCommand(arg);
 
+        case "remind":
+            String[] r = arg.split(" at ", 2);
+            boolean isRemindArgEmpty = arg.isBlank();
+            boolean isRemindIdxEmpty = r[0].isBlank();
+            boolean isRemindDateInvalid = !isValidDateTime(r[1]);
+            if (isRemindArgEmpty || isRemindIdxEmpty || isRemindDateInvalid) {
+                throw new TokiException("Format of the Command is: remind <index> at yyyy-MM-dd");
+            }
+            int idxr = Integer.parseInt(r[0].trim());
+            return new RemindCommand(idxr, parseDate(r[1]));
+
+        case "unremind":
+            if (arg.isBlank()) {
+                throw new TokiException("Format of the Command is: unremind <index>");
+            }
+            int idxur = Integer.parseInt(arg.trim());
+            if (idxur <= 0) {
+                throw new TokiException("Index must be positive.");
+            }
+            return new UnremindCommand(idxur);
+        case "reminders":
+            return new RemindersCommand();
+
         default: throw new TokiException("This is an unknown command.");
+        }
+    }
+
+    private static boolean isValidDateTime(String input) {
+        try {
+            LocalDate.parse(input.trim());
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
         }
     }
 }

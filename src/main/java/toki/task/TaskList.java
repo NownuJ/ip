@@ -1,5 +1,6 @@
 package toki.task;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +102,14 @@ public class TaskList {
      */
     public void unmark(int idx1) {
         tasks.get(idx1 - 1).markAsUndone();
+    }
+
+    public void remind(int idx1, LocalDate reminderTime) {
+        tasks.get(idx1 - 1).setReminderTime(reminderTime);
+    }
+
+    public void unremind(int idx1) {
+        tasks.get(idx1 - 1).setReminderTimeAsEmpty();
     }
 
     /**

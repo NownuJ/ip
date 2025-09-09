@@ -1,5 +1,7 @@
 package toki.task;
 
+import java.time.LocalDate;
+
 /**
  * Abstract base type for a task.
  * <p>
@@ -10,6 +12,7 @@ package toki.task;
 public class Task {
     protected String description;
     protected boolean isDone;
+    protected LocalDate reminderTime = null;
 
     /**
      * Creates a {@code Task} with description.
@@ -19,6 +22,18 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+    }
+
+    /**
+     * Creates a {@code Task} with description and reminderTime
+     *
+     * @param description description of the Task
+     * @param reminderTime time for the task to be reminded on
+     */
+    public Task(String description, LocalDate reminderTime) {
+        this.description = description;
+        this.isDone = false;
+        this.reminderTime = reminderTime;
     }
 
     public String getStatusIcon() {
@@ -46,4 +61,23 @@ public class Task {
         return this.isDone;
     }
 
+    public void setReminderTime(LocalDate reminderTime) {
+        this.reminderTime = reminderTime;
+    }
+
+    public void setReminderTimeAsEmpty() {
+        this.reminderTime = null;
+    }
+
+    public String toStringReminderTime() {
+        if (this.reminderTime == null) {
+            return "";
+        } else {
+            return " remind on " + this.reminderTime.toString();
+        }
+    }
+
+    public LocalDate getReminderTime() {
+        return reminderTime;
+    }
 }

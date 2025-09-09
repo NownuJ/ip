@@ -22,6 +22,8 @@ public class ListCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) {
+        assert tasks != null : "TaskList cannot be null";
+        assert ui != null : "UI cannot be null";
         String response = "Here are the tasks in your list:\n";
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);

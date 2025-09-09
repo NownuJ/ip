@@ -42,32 +42,9 @@ public class Toki {
 
     }
 
-    /**
-     * Runs the main loop of the application.
-     * <p>
-     * Continuously reads user commands, parses them into {@link Command} objects,
-     * executes them against the {@link TaskList}, and persists changes.
-     * Terminates when an exit command is issued.
-     */
-    /*private void run() {
-        ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            try {
-                String input = ui.readCommand();
-                ui.showLine();
-                Command c = Parser.parse(input);
-                c.execute(tasks, ui, storage);
-                isExit = c.isExit();
-            } catch (TokiException e) {
-                ui.showError(e.getMessage());
-            } finally {
-                ui.showLine();
-            }
-        }
-    }*/
 
-    public String getResponse(String input) throws TokiException{
+
+    public String getResponse(String input) throws TokiException {
         try {
             Command c = Parser.parse(input);
             return c.execute(tasks, ui, storage);
@@ -75,14 +52,5 @@ public class Toki {
             return e.getMessage();
         }
     }
-
-    /**
-     * Application entry point.
-     *
-     * @param args command-line arguments (unused)
-     */
-    /*public static void main(String[] args) {
-        new Toki("data/toki.txt").run();
-    }*/
 }
 

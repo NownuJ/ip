@@ -58,7 +58,11 @@ public class Parser {
 
         case "deadline":
             String[] d = arg.split("/by", 2);
-            if (d.length < 2 || d[0].isBlank() || d[1].isBlank()) {
+
+            boolean isDeadlineArgIncomplete = d.length < 2;
+            boolean isDeadlineDescEmpty = d[0].isBlank();
+            boolean isDeadlineByEmpty = d[1].isBlank();
+            if (isDeadlineArgIncomplete || isDeadlineDescEmpty || isDeadlineByEmpty) {
                 throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
             }
             return new DeadlineCommand(d[0], parseDate(d[1]));
@@ -66,7 +70,11 @@ public class Parser {
         case "event":
             String[] a = arg.split("/from", 2);
             String[] b = (a.length > 1) ? a[1].split("/to", 2) : new String[]{"", ""};
-            if (a[0].isBlank() || b.length < 2 || b[0].isBlank() || b[1].isBlank()) {
+            boolean isEventArgIncomplete = b.length < 2;
+            boolean isEventDescEmpty = a[0].isBlank();
+            boolean isEventFromEmpty = b[0].isBlank();
+            boolean isEventToEmpty = b[1].isBlank();
+            if (isEventDescEmpty || isEventArgIncomplete || isEventFromEmpty || isEventToEmpty) {
                 throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
             }
             return new EventCommand(a[0], parseDate(b[0]), parseDate(b[1]));

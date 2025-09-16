@@ -124,6 +124,9 @@ public class Parser {
         case "remind":
             String[] r = arg.split(" at ", 2);
             boolean isRemindArgEmpty = arg.isBlank();
+            if (r.length != 2) {
+                throw new TokiException("Format of the Command is: remind <index> at yyyy-MM-dd");
+            }
             boolean isRemindIdxEmpty = r[0].isBlank();
             boolean isRemindDateInvalid = !isValidDateTime(r[1]);
             if (isRemindArgEmpty || isRemindIdxEmpty || isRemindDateInvalid) {

@@ -91,7 +91,7 @@ public class TaskList {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public void mark(int idx1) {
-        tasks.get(idx1 - 1).markAsDone();
+        tasks.get(idx1).markAsDone();
     }
 
     /**
@@ -101,7 +101,7 @@ public class TaskList {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public void unmark(int idx1) {
-        tasks.get(idx1 - 1).markAsUndone();
+        tasks.get(idx1).markAsUndone();
     }
 
     public void remind(int idx1, LocalDate reminderTime) {

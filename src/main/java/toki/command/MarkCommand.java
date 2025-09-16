@@ -31,11 +31,11 @@ public class MarkCommand extends Command {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
         //operation
-        tasks.mark(index);
+        tasks.mark(index - 1);
         storage.save(tasks.asList());
 
         String response = "Nice! I've marked this task as done:\n"
-                    + "  " + tasks.get(index).toString();
+                    + "  " + tasks.get(index - 1).toString();
         return response;
     }
 }

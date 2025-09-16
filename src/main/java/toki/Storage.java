@@ -98,13 +98,25 @@ public class Storage {
         Task t;
         switch (p[0]) {
         case "T":
-            t = new Todo(p[2]);
+            if (p.length == 4) {
+                t = new Todo(p[2], LocalDate.parse(p[3]));
+            } else {
+                t = new Todo(p[2]);
+            }
             break;
         case "D":
-            t = new Deadline(p[2], LocalDate.parse(p[3]));
+            if (p.length == 5) {
+                t = new Deadline(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
+            } else {
+                t = new Deadline(p[2], LocalDate.parse(p[3]));
+            }
             break;
         case "E":
-            t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
+            if (p.length == 6) {
+                t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]), LocalDate.parse(p[5]));
+            } else {
+                t = new Event(p[2], LocalDate.parse(p[3]), LocalDate.parse(p[4]));
+            }
             break;
         default:
             return null;
@@ -133,13 +145,29 @@ public class Storage {
     private static String toLine(Task t) {
         String done = t.getIsDone() ? "1" : "0";
         if (t instanceof Todo) {
-            return String.join(" | ", "T", done, t.getDescription());
+            if (t.getReminderTime() != null) {
+                return String.join(" | ", "T", done, t.getDescription(),
+                        t.getReminderTime().toString());
+            } else {
+                return String.join(" | ", "T", done, t.getDescription());
+            }
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
-            return String.join(" | ", "D", done, d.getDescription(), d.getBy().toString());
+            if (d.getReminderTime() != null) {
+                return String.join(" | ", "D", done, d.getDescription(), d.getBy().toString(),
+                        t.getReminderTime().toString());
+            } else {
+                return String.join(" | ", "D", done, d.getDescription(), d.getBy().toString());
+            }
         } else {
             Event e = (Event) t;
-            return String.join(" | ", "E", done, e.getDescription(), e.getFrom().toString(), e.getTo().toString());
+            if (e.getReminderTime() != null) {
+                return String.join(" | ", "E", done, e.getDescription(), e.getFrom().toString(),
+                        e.getTo().toString(), t.getReminderTime().toString());
+            } else {
+                return String.join(" | ", "E", done, e.getDescription(), e.getFrom().toString(),
+                        e.getTo().toString());
+            }
         }
     }
 }

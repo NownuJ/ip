@@ -1,10 +1,9 @@
-# toki.Toki User Guide
+# Toki
 
-// Update the title above to match the actual product name
+![Ui](docs/Ui.png)
 
-// Product screenshot goes here
-
-// Product intro goes here
+Toki is a task manager chatbot that helps users keep track of tasks with
+features such as reminders, deadlines, and search.
 
 ## Adding deadlines
 

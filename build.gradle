@@ -49,13 +49,17 @@ java {
 }
 
 application {
-    mainClass.set("toki.Toki")
+    mainClass.set("toki.gui.Launcher")
 }
 
 shadowJar {
-    archiveBaseName = "duke"
     archiveClassifier = null
     archiveFileName = 'toki.jar'
+    manifest {
+        attributes(
+                'Main-Class': 'toki.gui.Launcher'
+        )
+    }
 }
 
 run{

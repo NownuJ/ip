@@ -91,7 +91,7 @@ public class TaskList {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public void mark(int idx1) {
-        tasks.get(idx1).markAsDone();
+        tasks.get(idx1 - 1).markAsDone();
     }
 
     /**
@@ -101,13 +101,26 @@ public class TaskList {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public void unmark(int idx1) {
-        tasks.get(idx1).markAsUndone();
+        tasks.get(idx1 - 1).markAsUndone();
     }
 
+    /**
+     * Sets a reminder date on the task at the given <b>one-based</b> index.
+     *
+     * @param idx1 one-based index of the task (1 = first task)
+     * @param reminderTime the date to set as reminder
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
     public void remind(int idx1, LocalDate reminderTime) {
         tasks.get(idx1 - 1).setReminderTime(reminderTime);
     }
 
+    /**
+     * Clears the reminder date of the task at the given <b>one-based</b> index.
+     *
+     * @param idx1 one-based index of the task (1 = first task)
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
     public void unremind(int idx1) {
         tasks.get(idx1 - 1).setReminderTimeAsEmpty();
     }

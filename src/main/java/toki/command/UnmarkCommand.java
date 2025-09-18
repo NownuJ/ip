@@ -14,6 +14,11 @@ import toki.task.TaskList;
 public class UnmarkCommand extends Command {
     private final int index;
 
+    /**
+     * Creates a {@code UnmarkCommand} with index.
+     *
+     * @param index 1-based index of the list that will be unmarked.
+     */
     public UnmarkCommand(int index) {
         this.index = index;
     }
@@ -31,7 +36,7 @@ public class UnmarkCommand extends Command {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
         //operation
-        tasks.unmark(index - 1);
+        tasks.unmark(index);
         storage.save(tasks.asList());
         String response = "Nice! I've marked this task as not done yet:\n"
                     + "  " + tasks.get(index - 1).toString();

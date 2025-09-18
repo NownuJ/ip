@@ -14,6 +14,11 @@ import toki.task.TaskList;
 public class MarkCommand extends Command {
     private final int index;
 
+    /**
+     * Creates a {@code MarkCommand} with index.
+     *
+     * @param index 1-based index of the list that will be marked.
+     */
     public MarkCommand(int index) {
         this.index = index;
     }
@@ -31,7 +36,7 @@ public class MarkCommand extends Command {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
         //operation
-        tasks.mark(index - 1);
+        tasks.mark(index);
         storage.save(tasks.asList());
 
         String response = "Nice! I've marked this task as done:\n"

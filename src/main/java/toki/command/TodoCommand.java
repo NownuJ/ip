@@ -17,6 +17,11 @@ public class TodoCommand extends Command {
 
     private final String desc;
 
+    /**
+     * Creates a {@code TodoCommand} with description.
+     *
+     * @param desc description of the deadline
+     */
     public TodoCommand(String desc) {
         this.desc = desc;
     }

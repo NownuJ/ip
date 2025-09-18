@@ -41,6 +41,11 @@ public class Event extends Task {
         this.to = to;
     }
 
+    /**
+     * Returns the string representation of this {@code Event} task.
+     *
+     * @return a formatted string representation of this Event task
+     */
     @Override
     public String toString() {
         String fromDate = from.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
@@ -48,10 +53,20 @@ public class Event extends Task {
         return "[E]" + super.toString() + " (from: " + fromDate + " to: " + toDate + ")" + super.toStringReminderTime();
     }
 
+    /**
+     * Returns the from LocalDate of this {@code Event} task.
+     *
+     * @return LocalDate 'from' of this task.
+     */
     public LocalDate getFrom() {
         return this.from;
     }
 
+    /**
+     * Returns the to LocalDate of this {@code Event} task.
+     *
+     * @return LocalDate 'to' of this task.
+     */
     public LocalDate getTo() {
         return this.to;
     }

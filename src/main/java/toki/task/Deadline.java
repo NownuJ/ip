@@ -35,12 +35,22 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    /**
+     * Returns the string representation of this {@code Deadline} task.
+     *
+     * @return a formatted string representation of this deadline task
+     */
     @Override
     public String toString() {
         String date = by.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
         return "[D]" + super.toString() + " (by: " + date + ")" + super.toStringReminderTime();
     }
 
+    /**
+     * Returns the by LocalDate of this {@code Deadline} task.
+     *
+     * @return LocalDate 'by' of this task.
+     */
     public LocalDate getBy() {
         return this.by;
     }

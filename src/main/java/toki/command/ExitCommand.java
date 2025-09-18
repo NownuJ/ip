@@ -24,6 +24,11 @@ public class ExitCommand extends Command {
         return "Bye. Hope to see you again soon!";
     }
 
+    /**
+     * Overrides method to set isExit boolean value to true, so that
+     * program will terminate.
+     *
+     */
     @Override
     public boolean isExit() {
         return true;

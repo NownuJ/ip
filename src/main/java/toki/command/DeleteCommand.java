@@ -15,6 +15,11 @@ import toki.task.TaskList;
 public class DeleteCommand extends Command {
     private final int index;
 
+    /**
+     * Creates a {@code DeleteCommand} with index.
+     *
+     * @param index 1-based index of the list that will be deleted.
+     */
     public DeleteCommand(int index) {
         this.index = index;
     }

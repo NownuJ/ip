@@ -28,6 +28,15 @@ import toki.command.UnremindCommand;
 
 public class Parser {
 
+    /**
+     * Parses a raw date string into a {@link LocalDate}.
+     * <p>
+     * Expects input in ISO-8601 format ({@code yyyy-MM-dd}).
+     *
+     * @param s the raw string containing a date
+     * @return the parsed {@link LocalDate}
+     * @throws TokiException if the input cannot be parsed as a valid date
+     */
     private static LocalDate parseDate(String s) throws TokiException {
         try {
             return LocalDate.parse(s.trim(), DateTimeFormatter.ISO_LOCAL_DATE);
@@ -63,9 +72,12 @@ public class Parser {
             String[] d = arg.split("/by", 2);
 
             boolean isDeadlineArgIncomplete = d.length < 2;
+            if (isDeadlineArgIncomplete) {
+                throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
+            }
             boolean isDeadlineDescEmpty = d[0].isBlank();
             boolean isDeadlineByEmpty = d[1].isBlank();
-            if (isDeadlineArgIncomplete || isDeadlineDescEmpty || isDeadlineByEmpty) {
+            if (isDeadlineDescEmpty || isDeadlineByEmpty) {
                 throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
             }
             return new DeadlineCommand(d[0], parseDate(d[1]));
@@ -74,10 +86,13 @@ public class Parser {
             String[] a = arg.split("/from", 2);
             String[] b = (a.length > 1) ? a[1].split("/to", 2) : new String[]{"", ""};
             boolean isEventArgIncomplete = b.length < 2;
+            if (isEventArgIncomplete) {
+                throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
+            }
             boolean isEventDescEmpty = a[0].isBlank();
             boolean isEventFromEmpty = b[0].isBlank();
             boolean isEventToEmpty = b[1].isBlank();
-            if (isEventDescEmpty || isEventArgIncomplete || isEventFromEmpty || isEventToEmpty) {
+            if (isEventDescEmpty || isEventFromEmpty || isEventToEmpty) {
                 throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
             }
             return new EventCommand(a[0], parseDate(b[0]), parseDate(b[1]));
@@ -151,6 +166,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Checks whether the given input string can be parsed as a valid ISO date.
+     *
+     * @param input the string to validate
+     * @return {@code true} if the input is a valid ISO-8601 date ({@code yyyy-MM-dd}),
+     *         {@code false} otherwise
+     */
     private static boolean isValidDateTime(String input) {
         try {
             LocalDate.parse(input.trim());

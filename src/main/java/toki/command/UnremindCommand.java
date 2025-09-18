@@ -15,9 +15,9 @@ public class UnremindCommand extends Command {
     private final int index;
 
     /**
-     * Creates unremind command.
+     * Creates a {@code UnremindCommand} with index.
      *
-     * @param index   index of the task to be edited
+     * @param index   1-based index of the task to be edited
      */
     public UnremindCommand(int index) {
         this.index = index;

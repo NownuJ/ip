@@ -17,10 +17,22 @@ import toki.task.TaskList;
 public class FindCommand extends Command {
     private final String keyword;
 
+    /**
+     * Creates a {@code FindCommand} with keyword.
+     *
+     * @param keyword String that will be searched in the tasks' descriptions.
+     */
     public FindCommand(String keyword) {
         this.keyword = keyword;
     }
 
+    /**
+     * Executes this command.
+     *
+     * @param tasks   the task list to mutate/query
+     * @param ui      the UI for showing messages
+     * @param storage the storage used to persist changes when necessary
+     */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         assert tasks != null : "TaskList cannot be null";

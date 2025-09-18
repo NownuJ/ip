@@ -17,9 +17,9 @@ public class RemindCommand extends Command {
     private final LocalDate reminderDate;
 
     /**
-     * Creates remind command.
+     * Creates a {@code RemindCommand} with index and reminderDate
      *
-     * @param index   index of the task to be edited
+     * @param index   1-based index of the task to be edited
      * @param reminderDate      LocalDate to be set as the new reminderDate
      */
     public RemindCommand(int index, LocalDate reminderDate) {

@@ -47,6 +47,15 @@ public class EventCommand extends Command {
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
+
+        boolean isEventDescEmpty = desc.isBlank();
+        if (isEventDescEmpty) {
+            throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
+        }
+        if (from.isAfter(to)) {
+            throw new TokiException("Start date cannot be after end date.");
+        }
+
         Event event = new Event(desc, from, to);
         tasks.add(event);
         storage.save(tasks.asList());

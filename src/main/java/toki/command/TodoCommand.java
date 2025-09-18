@@ -39,6 +39,9 @@ public class TodoCommand extends Command {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
         //operation
+        if (desc.isBlank()) {
+            throw new TokiException("Format of the Command is: todo <desc>");
+        }
         Todo todo = new Todo(desc);
         tasks.add(todo);
         storage.save(tasks.asList());

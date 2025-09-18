@@ -43,6 +43,11 @@ public class DeadlineCommand extends Command {
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
+        boolean isDeadlineDescEmpty = desc.isBlank();
+        if (isDeadlineDescEmpty) {
+            throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
+        }
+
         Deadline deadline = new Deadline(desc, by);
         tasks.add(deadline);
         storage.save(tasks.asList());

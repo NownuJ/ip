@@ -45,8 +45,18 @@ public class Parser {
         }
     }
 
+    private static int parseIndex(String s) throws TokiException {
+        try {
+            return Integer.parseInt(s.trim());
+        } catch (NumberFormatException e) {
+            throw new TokiException("Index must be a valid integer.");
+        }
+    }
+
     /**
      * Parses a raw input line into a {@link toki.command.Command}.
+     * Parser will check for user syntax error, to ensure that user inputs are complete and valid.
+     * Each command class will then check for internal conditions respective to their functions again.
      *
      * @param full the raw user input
      * @return the command to execute
@@ -63,9 +73,6 @@ public class Parser {
         case "list":
             return new ListCommand();
         case "todo":
-            if (arg.isBlank()) {
-                throw new TokiException("Format of the Command is: todo <desc>");
-            }
             return new TodoCommand(arg);
 
         case "deadline":
@@ -75,13 +82,7 @@ public class Parser {
             if (isDeadlineArgIncomplete) {
                 throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
             }
-            boolean isDeadlineDescEmpty = d[0].isBlank();
-            boolean isDeadlineByEmpty = d[1].isBlank();
-            if (isDeadlineDescEmpty || isDeadlineByEmpty) {
-                throw new TokiException("Format of the Command is: deadline <desc> /by yyyy-MM-dd");
-            }
             return new DeadlineCommand(d[0], parseDate(d[1]));
-
         case "event":
             String[] a = arg.split("/from", 2);
             String[] b = (a.length > 1) ? a[1].split("/to", 2) : new String[]{"", ""};
@@ -89,23 +90,13 @@ public class Parser {
             if (isEventArgIncomplete) {
                 throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
             }
-            boolean isEventDescEmpty = a[0].isBlank();
-            boolean isEventFromEmpty = b[0].isBlank();
-            boolean isEventToEmpty = b[1].isBlank();
-            if (isEventDescEmpty || isEventFromEmpty || isEventToEmpty) {
-                throw new TokiException("Format of the Command is: event <desc> /from yyyy-MM-dd /to yyyy-MM-dd");
-            }
+
             return new EventCommand(a[0], parseDate(b[0]), parseDate(b[1]));
-
-
         case "mark":
             if (arg.isBlank()) {
                 throw new TokiException("Format of the Command is: mark <index>");
             }
-            int idxm = Integer.parseInt(arg.trim());
-            if (idxm <= 0) {
-                throw new TokiException("Index must be positive.");
-            }
+            int idxm = parseIndex(arg);
             return new MarkCommand(idxm);
 
 
@@ -113,72 +104,43 @@ public class Parser {
             if (arg.isBlank()) {
                 throw new TokiException("Format of the Command is: unmark <index>");
             }
-            int idxu = Integer.parseInt(arg.trim());
-            if (idxu <= 0) {
-                throw new TokiException("Index must be positive.");
-            }
+            int idxu = parseIndex(arg);
             return new UnmarkCommand(idxu);
-
 
         case "delete":
             if (arg.isBlank()) {
                 throw new TokiException("Format of the Command is: delete <index>");
             }
-            int idxd = Integer.parseInt(arg.trim());
-            if (idxd <= 0) {
-                throw new TokiException("Index must be positive.");
-            }
+            int idxd = parseIndex(arg);
             return new DeleteCommand(idxd);
 
         case "find":
             if (arg.isBlank()) {
-                throw new TokiException("Format of the Command is: find <text>");
+                throw new TokiException("Format of the Command is: find <keyword>");
             }
             return new FindCommand(arg);
 
         case "remind":
+            if (arg.isBlank()) {
+                throw new TokiException("Format of the Command is: remind <index> at yyyy-MM-dd");
+            }
             String[] r = arg.split(" at ", 2);
-            boolean isRemindArgEmpty = arg.isBlank();
             if (r.length != 2) {
                 throw new TokiException("Format of the Command is: remind <index> at yyyy-MM-dd");
             }
-            boolean isRemindIdxEmpty = r[0].isBlank();
-            boolean isRemindDateInvalid = !isValidDateTime(r[1]);
-            if (isRemindArgEmpty || isRemindIdxEmpty || isRemindDateInvalid) {
-                throw new TokiException("Format of the Command is: remind <index> at yyyy-MM-dd");
-            }
-            int idxr = Integer.parseInt(r[0].trim());
-            return new RemindCommand(idxr, parseDate(r[1]));
+
+            return new RemindCommand(parseIndex(r[0]), parseDate(r[1]));
 
         case "unremind":
             if (arg.isBlank()) {
                 throw new TokiException("Format of the Command is: unremind <index>");
             }
-            int idxur = Integer.parseInt(arg.trim());
-            if (idxur <= 0) {
-                throw new TokiException("Index must be positive.");
-            }
+            int idxur = parseIndex(arg);
             return new UnremindCommand(idxur);
         case "reminders":
             return new RemindersCommand();
 
         default: throw new TokiException("This is an unknown command.");
-        }
-    }
-
-    /**
-     * Checks whether the given input string can be parsed as a valid ISO date.
-     *
-     * @param input the string to validate
-     * @return {@code true} if the input is a valid ISO-8601 date ({@code yyyy-MM-dd}),
-     *         {@code false} otherwise
-     */
-    private static boolean isValidDateTime(String input) {
-        try {
-            LocalDate.parse(input.trim());
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
         }
     }
 }

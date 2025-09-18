@@ -39,6 +39,13 @@ public class RemindCommand extends Command {
     public String execute(TaskList tasks, Ui ui, Storage storage) throws TokiException {
         assert tasks != null : "TaskList cannot be null";
         assert ui != null : "UI cannot be null";
+        if (index <= 0) {
+            throw new TokiException("Index must be positive.");
+        }
+        if (index > tasks.size()) {
+            throw new TokiException("Invalid task index. Please enter a number between 1 and " + tasks.size() + ".");
+        }
+
         //operation
         tasks.remind(index, reminderDate);
         storage.save(tasks.asList());
